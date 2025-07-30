@@ -51,6 +51,53 @@
 <a class="whatsapp" href="https://wa.me/51923037869?text=Hola,%20quiero%20comprar%20herramientas" target="_blank" aria-label="WhatsApp">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:36px;height:36px;display:block;">
 </a>
+<!-- ===================
+  Botón y modal Libro de Reclamaciones
+=================== -->
+<button id="btn-libro" style="position:fixed;bottom:30px;left:20px;z-index:998;background:#fff;border:2px solid #ff6f00;border-radius:50px;padding:0.4rem 1.2rem;box-shadow:0 2px 8px rgba(0,0,0,0.12);color:#ff6f00;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:0.5rem;font-size:1rem;cursor:pointer;align-items:center;">
+  <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="Libro de Reclamaciones" style="width:28px;height:28px;display:block;">
+  Libro de Reclamaciones
+</button>
+
+<div id="modal-libro" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;">
+  <div style="background:#000000;padding:2rem 1.5rem 1.5rem 1.5rem;border-radius:10px;max-width:420px;width:95%;position:relative;">
+    <button onclick="cerrarLibro()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;background:none;border:none;cursor:pointer;">&times;</button>
+    <h2 style="color:#ff6f00;margin-top:0;">Libro de Reclamaciones</h2>
+    <form id="form-libro" autocomplete="off" style="display:flex;flex-direction:column;gap:0.7rem;">
+      <input type="text" name="nombre" placeholder="Nombre completo" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
+      <input type="email" name="correo" placeholder="Correo electrónico" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
+      <input type="tel" name="telefono" placeholder="Teléfono" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
+      <textarea name="reclamo" placeholder="Detalle de su reclamo" required rows="4" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;"></textarea>
+      <button type="submit" style="background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:bold;">Enviar reclamo</button>
+    </form>
+    <div id="libro-confirm" style="display:none;margin-top:1rem;color:#388e3c;font-weight:bold;text-align:center;">¡Reclamo enviado correctamente!</div>
+  </div>
+</div>
+
+<script>
+  // Abrir modal libro
+  document.getElementById('btn-libro').onclick = function() {
+    document.getElementById('modal-libro').style.display = 'flex';
+    document.getElementById('libro-confirm').style.display = 'none';
+    document.getElementById('form-libro').reset();
+  };
+  // Cerrar modal libro
+  function cerrarLibro() {
+    document.getElementById('modal-libro').style.display = 'none';
+  }
+  // Enviar formulario libro (mailto y confirmación)
+  document.getElementById('form-libro').onsubmit = function(e) {
+    e.preventDefault();
+    const nombre = this.nombre.value;
+    const correo = this.correo.value;
+    const telefono = this.telefono.value;
+    const reclamo = this.reclamo.value;
+    const body = `Nombre: ${nombre}%0ACorreo: ${correo}%0ATeléfono: ${telefono}%0AReclamo: ${reclamo}`;
+    window.open(`mailto:tu_correo@ejemplo.com?subject=Reclamo%20desde%20Libro%20de%20Reclamaciones&body=${body}`);
+    document.getElementById('libro-confirm').style.display = 'block';
+    setTimeout(cerrarLibro, 2500);
+  };
+</script>
 
 <!-- ===================
   Pie de página con dirección y derechos
