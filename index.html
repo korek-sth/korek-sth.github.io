@@ -8,7 +8,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-
 <!-- ===================
   Encabezado con logo y título
 =================== -->
@@ -18,10 +17,7 @@
   </div>
   <p>Herramientas para el desempeño automotriz</p>
 </header>
-
-<!-- ===================
-  Filtros de búsqueda Marcas
-=================== -->
+<!--Filtros de búsqueda Marcas-->
 <div class="container">
   <div class="filtro">
     <label>Filtrar por marca:</label>
@@ -38,29 +34,19 @@
     <input type="text" id="buscador-nombre" placeholder="Buscar producto..." oninput="buscarPorNombre()">
   </div>
 
-  <!-- ===================
-    Listado de productos
-  =================== -->
+  <!--Listado de productos-->
   <div class="productos" id="lista-productos">
-    
   </div>
 </div>
-
-<!-- ===================
-  Botón WhatsApp flotante
-=================== -->
+<!--Botón WhatsApp flotante-->
 <a class="whatsapp" href="https://wa.me/51923037869?text=Hola,%20quiero%20comprar%20herramientas" target="_blank" aria-label="WhatsApp">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:36px;height:36px;display:block;">
 </a>
-
-<!-- ===================
-  Botón y modal Libro de Reclamaciones
-=================== -->
+<!--Botón y modal Libro de Reclamaciones-->
 <button id="btn-libro" style="position:fixed;bottom:30px;left:20px;z-index:998;background:#fff;border:2px solid #ff6f00;border-radius:50px;padding:0.4rem 1.2rem;box-shadow:0 2px 8px rgba(0,0,0,0.12);color:#ff6f00;font-weight:bold;text-decoration:none;display:flex;align-items:center;gap:0.5rem;font-size:1rem;cursor:pointer;align-items:center;">
   <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="Libro de Reclamaciones" style="width:28px;height:28px;display:block;">
   Libro de Reclamaciones
 </button>
-
 <div id="modal-libro" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;">
   <div class="libro-modal-box">
     <button onclick="cerrarLibro()" class="libro-close">&times;</button>
@@ -93,7 +79,6 @@
     <div id="libro-confirm" class="libro-confirm">¡Reclamo enviado correctamente!</div>
   </div>
 </div>
-
 <style>
   .libro-modal-box {
     background: #fff;
@@ -236,7 +221,6 @@
   }
 </style>
 </div>
-
 <script>
   // Mostrar fecha y hora de registro
   function setFechaHoraRegistro() {
@@ -271,7 +255,6 @@
     document.getElementById('libro-confirm').style.display = 'block';
     setTimeout(cerrarLibro, 2500);
   };
-
   // Descargar PDF del reclamo
   document.getElementById('btn-descargar-pdf').onclick = function() {
     const form = document.getElementById('form-libro');
@@ -312,9 +295,7 @@
   };
 </script>
 
-<!-- ===================
-  Pie de página con dirección y derechos
-=================== -->
+<!--Pie de página con dirección y derechos-->
 <footer>
   <p>&copy; 2025 KAY PACHA Perú. Todos los derechos reservados.</p>
   <p style="margin-top:1rem;font-size:1rem;">
@@ -336,7 +317,6 @@
     { nombre: "Juego de llaves 14 Ferrawy piezas", marca: "Ferrawy", imagen: "https://http2.mlstatic.com/D_NQ_NP_865461-MPE50740765838_072022-O-juego-de-14-llaves-mixtas-combinadas-6mm-a-24mm-ferrawy.webp", precio: 75 },
     { nombre: "Lagarto de 3 toneladas Uyustoll", marca: "Uyustool", imagen: "https://ferreman.pe/wp-content/uploads/2023/08/GAM103-600x600-1.jpg", precio: 690 },
   ];
-
   // Muestra los productos en pantalla según la lista recibida
   function mostrarProductos(lista) {
     const contenedor = document.getElementById("lista-productos");
@@ -354,7 +334,6 @@
       contenedor.appendChild(item);
     });
   }
-
   // Filtra productos por nombre (input) y marca (select)
   function buscarPorNombre() {
     const texto = document.getElementById('buscador-nombre').value.toLowerCase();
@@ -368,7 +347,6 @@
     }
     mostrarProductos(listaFiltrada);
   }
-
   // Filtra productos por marca y nombre (usado por el select)
   function filtrarProductos(marca) {
     const texto = document.getElementById('buscador-nombre').value.toLowerCase();
@@ -381,10 +359,8 @@
     }
     mostrarProductos(listaFiltrada);
   }
-
   // Carrito de compras (array de productos seleccionados)
   let carrito = [];
-
   // Añade un producto al carrito o suma cantidad si ya existe
   function agregarCarrito(nombre) {
     const prod = productos.find(p => p.nombre === nombre);
@@ -396,7 +372,6 @@
     }
     alert(`"${nombre}" añadido al carrito.`);
   }
-
   // Muestra la boleta (modal) con el resumen del carrito
   function mostrarBoleta() {
     if (carrito.length === 0) {
@@ -416,12 +391,10 @@
     }
     document.getElementById('modal-boleta').style.display = 'flex';
   }
-
   // Cierra el modal de la boleta
   function cerrarBoleta() {
     document.getElementById('modal-boleta').style.display = 'none';
   }
-
   // Envía la boleta por WhatsApp al número configurado
   function enviarBoletaWhatsapp() {
     if (carrito.length === 0) {
@@ -439,7 +412,6 @@
     const url = `https://wa.me/51923037869?text=${mensaje}`;
     window.open(url, '_blank');
   }
-
   // Vacía el carrito y actualiza la boleta
   function vaciarCarrito() {
     if (carrito.length === 0) {
@@ -451,14 +423,11 @@
       mostrarBoleta();
     }
   }
-
   // Inicializa la tienda mostrando todos los productos
   mostrarProductos(productos);
 </script>
 
-<!-- ===================
-  Modal de boleta y botón flotante
-=================== -->
+<!-- Modal de boleta y botón flotante-->
 <div id="modal-boleta" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
   <div style="background:#fff;padding:2rem;border-radius:10px;max-width:400px;width:90%;position:relative;">
     <button onclick="cerrarBoleta()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;">&times;</button>
@@ -545,7 +514,6 @@
       };
     </script>
   </div>
-  
   <
 </div>
 <button id="ver-boleta" onclick="mostrarBoleta()" style="position:fixed;bottom:90px;right:20px;z-index:999;background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;">Ver boleta</button>
