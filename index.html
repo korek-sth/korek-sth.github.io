@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kay Pacha Perú</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===================
+  Encabezado con logo y título
+=================== -->
+<header>
+  <div style="display:flex;align-items:center;justify-content:center;gap:1rem;">
+    <img src="imagenes/kaypacha_2.png" alt="Kay Pacha Logo" style="height:60px;width:auto;display:block;">
+    <h1 style="margin:0;">KAY PACHA Perú</h1>
+  </div>
+  <p>Herramientas para el desempeño automotriz</p>
+</header>
+
+<!-- ===================
+  Filtros de búsqueda Marcas
+=================== -->
+<div class="container">
+  <div class="filtro">
+    <label>Filtrar por marca:</label>
+    <select onchange="filtrarProductos(this.value)">
+      <option value="todas">Todas</option>
+      <option value="Stanley">Stanley</option>
+      <option value="Sata">Sata</option>
+      <option value="Truper">Truper</option>
+      <option value="Tooltech">Tooltech</option>
+      <option value="Ferrawy">Ferrawy</option>
+      <option value="Uyustool">Uyustool</option>
+    </select>
+    <label style="margin-left:1rem;">Buscar por nombre:</label>
+    <input type="text" id="buscador-nombre" placeholder="Buscar producto..." oninput="buscarPorNombre()">
+  </div>
+
+  <!-- ===================
+    Listado de productos
+  =================== -->
+  <div class="productos" id="lista-productos">
+    
+  </div>
+</div>
+
+<!-- ===================
+  Botón WhatsApp flotante
+=================== -->
+<a class="whatsapp" href="https://wa.me/51923037869?text=Hola,%20quiero%20comprar%20herramientas" target="_blank" aria-label="WhatsApp">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:36px;height:36px;display:block;">
+</a>
+
+<!-- ===================
+  Pie de página con dirección y derechos
+=================== -->
+<footer>
+  <p>&copy; 2025 KAY PACHA Perú. Todos los derechos reservados.</p>
+  <p style="margin-top:1rem;font-size:1rem;">
+    Nos ubicamos en:
+    <a href="https://maps.app.goo.gl/HUuZ4rC7cbam1gDY8" target="_blank" style="color:#ffffff;text-decoration:underline;">Jr. Antonio Raymondi 326, interior 102</a>.
+  </p>
+</footer>
+
+<!-- ===================
+  Script principal de la tienda
+=================== -->
+<script>
+  // Array de productos disponibles en la tienda
+  const productos = [
+    { nombre: "Juego de llaves 20 piezas", marca: "Stanley", imagen: "https://www.ferropolis.pe/cdn/shop/products/85-783-1.webp?v=1663256988", precio: 120 },
+    { nombre: "Torre para auto 3 toneladas", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/8450277-1000-1000/imageUrl_1.jpg?v=638679423222700000", precio: 120 },
+    { nombre: "Juego de llaves 23 piezas", marca: "Sata", imagen: "https://images-na.ssl-images-amazon.com/images/I/A1GK2MAfF1L._AC_UL210_SR210,210_.jpg", precio: 360 },
+    { nombre: "Maleta de herramientas 216 piezas", marca: "Tooltech", imagen: "https://limacarstore.pe/wp-content/uploads/2021/10/38-1.webp", precio: 640 },
+    { nombre: "Juego de llaves 14 piezas", marca: "Ferrawy", imagen: "https://http2.mlstatic.com/D_NQ_NP_865461-MPE50740765838_072022-O-juego-de-14-llaves-mixtas-combinadas-6mm-a-24mm-ferrawy.webp", precio: 75 },
+    { nombre: "Lagarto de 3 toneladas", marca: "Uyustool", imagen: "https://ferreman.pe/wp-content/uploads/2023/08/GAM103-600x600-1.jpg", precio: 690 },
+  ];
+
+  // Muestra los productos en pantalla según la lista recibida
+  function mostrarProductos(lista) {
+    const contenedor = document.getElementById("lista-productos");
+    contenedor.innerHTML = "";
+    lista.forEach(p => {
+      const item = document.createElement("div");
+      item.className = "producto";
+      item.innerHTML = `
+        ${p.imagen ? `<img src="${p.imagen}" alt="${p.nombre}" style="width:100%;max-width:180px;display:block;margin:auto;">` : ""}
+        <h3>${p.nombre}</h3>
+        <p><strong>Marca:</strong> ${p.marca}</p>
+        <p><strong>Precio:</strong> S/ ${p.precio}</p>
+        <button onclick="agregarCarrito('${p.nombre}')">Añadir al carrito</button>
+      `;
+      contenedor.appendChild(item);
+    });
+  }
+
+  // Filtra productos por nombre (input) y marca (select)
+  function buscarPorNombre() {
+    const texto = document.getElementById('buscador-nombre').value.toLowerCase();
+    const marca = document.querySelector('.filtro select').value;
+    let listaFiltrada = productos;
+    if (marca !== 'todas') {
+      listaFiltrada = listaFiltrada.filter(p => p.marca === marca);
+    }
+    if (texto) {
+      listaFiltrada = listaFiltrada.filter(p => p.nombre.toLowerCase().includes(texto));
+    }
+    mostrarProductos(listaFiltrada);
+  }
+
+  // Filtra productos por marca y nombre (usado por el select)
+  function filtrarProductos(marca) {
+    const texto = document.getElementById('buscador-nombre').value.toLowerCase();
+    let listaFiltrada = productos;
+    if (marca !== 'todas') {
+      listaFiltrada = listaFiltrada.filter(p => p.marca === marca);
+    }
+    if (texto) {
+      listaFiltrada = listaFiltrada.filter(p => p.nombre.toLowerCase().includes(texto));
+    }
+    mostrarProductos(listaFiltrada);
+  }
+
+  // Carrito de compras (array de productos seleccionados)
+  let carrito = [];
+
+  // Añade un producto al carrito o suma cantidad si ya existe
+  function agregarCarrito(nombre) {
+    const prod = productos.find(p => p.nombre === nombre);
+    const item = carrito.find(p => p.nombre === nombre);
+    if (item) {
+      item.cantidad++;
+    } else {
+      carrito.push({ ...prod, cantidad: 1 });
+    }
+    alert(`"${nombre}" añadido al carrito.`);
+  }
+
+  // Muestra la boleta (modal) con el resumen del carrito
+  function mostrarBoleta() {
+    if (carrito.length === 0) {
+      document.getElementById('contenido-boleta').innerHTML = '<p>No hay productos en el carrito.</p>';
+    } else {
+      let total = 0;
+      let html = '<table style="width:100%;border-collapse:collapse;">';
+      html += '<tr><th style="text-align:left;">Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr>';
+      carrito.forEach(p => {
+        const subtotal = p.precio * p.cantidad;
+        total += subtotal;
+        html += `<tr><td>${p.nombre}</td><td style='text-align:center;'>${p.cantidad}</td><td style='text-align:right;'>S/ ${p.precio}</td><td style='text-align:right;'>S/ ${subtotal}</td></tr>`;
+      });
+      html += `<tr><td colspan='3' style='text-align:right;'><strong>Total:</strong></td><td style='text-align:right;'><strong>S/ ${total}</strong></td></tr>`;
+      html += '</table>';
+      document.getElementById('contenido-boleta').innerHTML = html;
+    }
+    document.getElementById('modal-boleta').style.display = 'flex';
+  }
+
+  // Cierra el modal de la boleta
+  function cerrarBoleta() {
+    document.getElementById('modal-boleta').style.display = 'none';
+  }
+
+  // Envía la boleta por WhatsApp al número configurado
+  function enviarBoletaWhatsapp() {
+    if (carrito.length === 0) {
+      alert('No hay productos en el carrito.');
+      return;
+    }
+    let mensaje = '¡Hola! Quiero comprar estos productos:%0A';
+    let total = 0;
+    carrito.forEach(p => {
+      const subtotal = p.precio * p.cantidad;
+      total += subtotal;
+      mensaje += `- ${p.nombre} (x${p.cantidad}) S/ ${p.precio} = S/ ${subtotal}%0A`;
+    });
+    mensaje += `Total: S/ ${total}`;
+    const url = `https://wa.me/51923037869?text=${mensaje}`;
+    window.open(url, '_blank');
+  }
+
+  // Vacía el carrito y actualiza la boleta
+  function vaciarCarrito() {
+    if (carrito.length === 0) {
+      alert('El carrito ya está vacío.');
+      return;
+    }
+    if (confirm('¿Seguro que deseas vaciar la boleta?')) {
+      carrito = [];
+      mostrarBoleta();
+    }
+  }
+
+  // Inicializa la tienda mostrando todos los productos
+  mostrarProductos(productos);
+</script>
+
+<!-- ===================
+  Modal de boleta y botón flotante
+=================== -->
+<div id="modal-boleta" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;padding:2rem;border-radius:10px;max-width:400px;width:90%;position:relative;">
+    <button onclick="cerrarBoleta()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;">&times;</button>
+    <h2>Boleta de compra</h2>
+    <div id="contenido-boleta"></div>
+    <button onclick="enviarBoletaWhatsapp()" style="margin-top:1rem;background:#25D366;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:8px;cursor:pointer;width:100%;font-size:1rem;">Enviar boleta por WhatsApp</button>
+    <button onclick="vaciarCarrito()" style="margin-top:0.5rem;background:#e53935;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:8px;cursor:pointer;width:100%;font-size:1rem;">Vaciar boleta</button>
+  </div>
+</div>
+<button id="ver-boleta" onclick="mostrarBoleta()" style="position:fixed;bottom:90px;right:20px;z-index:999;background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;">Ver boleta</button>
+
+</body>
+</html>
