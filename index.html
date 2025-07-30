@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kay Pacha Perú</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -51,6 +52,7 @@
 <a class="whatsapp" href="https://wa.me/51923037869?text=Hola,%20quiero%20comprar%20herramientas" target="_blank" aria-label="WhatsApp">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:36px;height:36px;display:block;">
 </a>
+
 <!-- ===================
   Botón y modal Libro de Reclamaciones
 =================== -->
@@ -60,28 +62,179 @@
 </button>
 
 <div id="modal-libro" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;">
-  <div style="background:#4e4e4e;padding:2rem 1.5rem 1.5rem 1.5rem;border-radius:10px;max-width:420px;width:95%;position:relative;">
-    <button onclick="cerrarLibro()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;background:none;border:none;cursor:pointer;">&times;</button>
-    <h2 style="color:#ff6f00;margin-top:0;">Libro de Reclamaciones</h2>
-    <form id="form-libro" autocomplete="off" style="display:flex;flex-direction:column;gap:0.7rem;">
-      <input type="text" name="nombre" placeholder="Nombre completo" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <input type="email" name="correo" placeholder="Correo electrónico" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <input type="tel" name="telefono" placeholder="Teléfono" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <input type="date" name="fecha_compra" placeholder="Fecha de compra" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <input type="text" name="numero_pedido" placeholder="N° de pedido/transacción" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <textarea name="descripcion" placeholder="Descripción detallada del problema (ej: producto defectuoso, entrega tardía, publicidad engañosa)" required rows="3" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;"></textarea>
-      <label style="font-size:0.95rem;">Adjuntar pruebas (imágenes, PDF, etc.):
-        <input type="file" name="pruebas" id="pruebas" multiple accept="image/*,application/pdf" style="margin-top:0.3rem;">
+  <div class="libro-modal-box">
+    <button onclick="cerrarLibro()" class="libro-close">&times;</button>
+    <h2 class="libro-title"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="icon" style="width:32px;vertical-align:middle;margin-right:8px;">Libro de Reclamaciones</h2>
+    <form id="form-libro" autocomplete="off" class="libro-form">
+      <div class="libro-row">
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <input type="email" name="correo" placeholder="Correo electrónico" required>
+      </div>
+      <div class="libro-row">
+        <input type="tel" name="telefono" placeholder="Teléfono">
+        <input type="date" name="fecha_compra" placeholder="Fecha de compra" required>
+      </div>
+      <div class="libro-row">
+        <input type="text" name="numero_pedido" placeholder="N° de pedido/transacción" required>
+        <input type="text" name="solucion" placeholder="¿Qué solución espera? (reembolso, cambio, reparación, etc.)" required>
+      </div>
+      <textarea name="descripcion" placeholder="Descripción detallada del problema (ej: producto defectuoso, entrega tardía, publicidad engañosa)" required rows="3"></textarea>
+      <label class="libro-label">Adjuntar pruebas (imágenes, PDF, etc.):
+        <input type="file" name="pruebas" id="pruebas" multiple accept="image/*,application/pdf">
       </label>
-      <input type="text" name="solucion" placeholder="¿Qué solución espera? (reembolso, cambio, reparación, etc.)" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <div style="font-size:0.95rem;color:#555;">Fecha y hora de registro: <span id="fecha-hora-registro"></span></div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-        <button type="submit" style="background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:bold;">Enviar reclamo</button>
-        <button type="button" id="btn-descargar-pdf" style="background:#1976d2;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:bold;">Descargar PDF</button>
+      <div class="libro-row libro-fecha">
+        <span>Fecha y hora de registro: <span id="fecha-hora-registro"></span></span>
+      </div>
+      <div class="libro-row libro-btns">
+        <button type="submit" class="libro-btn-enviar">Enviar reclamo</button>
+        <button type="button" id="btn-descargar-pdf" class="libro-btn-pdf">Descargar PDF</button>
       </div>
     </form>
-    <div id="libro-confirm" style="display:none;margin-top:1rem;color:#388e3c;font-weight:bold;text-align:center;">¡Reclamo enviado correctamente!</div>
+    <div id="libro-confirm" class="libro-confirm">¡Reclamo enviado correctamente!</div>
   </div>
+</div>
+
+<style>
+  .libro-modal-box {
+    background: #fff;
+    padding: 2.2rem 2rem 1.5rem 2rem;
+    border-radius: 16px;
+    max-width: 480px;
+    width: 97%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    animation: libroFadeIn .3s;
+  }
+  @keyframes libroFadeIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .libro-title {
+    color: #ff6f00;
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+  }
+  .libro-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.7rem;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .libro-close:hover { color: #e53935; }
+  .libro-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .libro-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .libro-form input[type="text"],
+  .libro-form input[type="email"],
+  .libro-form input[type="tel"],
+  .libro-form input[type="date"],
+  .libro-form textarea {
+    flex: 1 1 0;
+    padding: 0.6rem 0.8rem;
+    border-radius: 7px;
+    border: 1.2px solid #d1d1d1;
+    font-size: 1rem;
+    background: #fafafa;
+    transition: border 0.2s;
+    margin-bottom: 0;
+  }
+  .libro-form input[type="text"]:focus,
+  .libro-form input[type="email"]:focus,
+  .libro-form input[type="tel"]:focus,
+  .libro-form input[type="date"]:focus,
+  .libro-form textarea:focus {
+    border: 1.2px solid #ff6f00;
+    outline: none;
+    background: #fffbe7;
+  }
+  .libro-form textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+  .libro-label {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 0.2rem;
+    display: block;
+  }
+  .libro-form input[type="file"] {
+    margin-top: 0.3rem;
+    font-size: 0.97rem;
+  }
+  .libro-fecha {
+    font-size: 0.98rem;
+    color: #666;
+    margin-bottom: 0.2rem;
+  }
+  .libro-btns {
+    justify-content: flex-end;
+    gap: 0.7rem;
+  }
+  .libro-btn-enviar {
+    background: linear-gradient(90deg,#ff9800,#ff6f00);
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(255,111,0,0.08);
+    transition: background 0.2s;
+  }
+  .libro-btn-enviar:hover {
+    background: linear-gradient(90deg,#ff6f00,#ff9800);
+  }
+  .libro-btn-pdf {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+    transition: background 0.2s;
+  }
+  .libro-btn-pdf:hover {
+    background: #1251a3;
+  }
+  .libro-confirm {
+    display: none;
+    margin-top: 1.2rem;
+    color: #388e3c;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.08rem;
+    letter-spacing: 0.5px;
+  }
+  @media (max-width: 600px) {
+    .libro-modal-box {
+      padding: 1.2rem 0.5rem 1rem 0.5rem;
+      max-width: 99vw;
+    }
+    .libro-row { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
 </div>
 
 <script>
@@ -158,6 +311,7 @@
     doc.save('reclamo_libro_kaypacha.pdf');
   };
 </script>
+
 <!-- ===================
   Pie de página con dirección y derechos
 =================== -->
