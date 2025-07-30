@@ -60,26 +60,43 @@
 </button>
 
 <div id="modal-libro" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;">
-  <div style="background:#000000;padding:2rem 1.5rem 1.5rem 1.5rem;border-radius:10px;max-width:420px;width:95%;position:relative;">
+  <div style="background:#4e4e4e;padding:2rem 1.5rem 1.5rem 1.5rem;border-radius:10px;max-width:420px;width:95%;position:relative;">
     <button onclick="cerrarLibro()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;background:none;border:none;cursor:pointer;">&times;</button>
     <h2 style="color:#ff6f00;margin-top:0;">Libro de Reclamaciones</h2>
     <form id="form-libro" autocomplete="off" style="display:flex;flex-direction:column;gap:0.7rem;">
       <input type="text" name="nombre" placeholder="Nombre completo" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
       <input type="email" name="correo" placeholder="Correo electrónico" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
       <input type="tel" name="telefono" placeholder="Teléfono" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
-      <textarea name="reclamo" placeholder="Detalle de su reclamo" required rows="4" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;"></textarea>
-      <button type="submit" style="background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:bold;">Enviar reclamo</button>
+      <input type="date" name="fecha_compra" placeholder="Fecha de compra" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
+      <input type="text" name="numero_pedido" placeholder="N° de pedido/transacción" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
+      <textarea name="descripcion" placeholder="Descripción detallada del problema (ej: producto defectuoso, entrega tardía, publicidad engañosa)" required rows="3" style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;"></textarea>
+      <label style="font-size:0.95rem;">Adjuntar pruebas (imágenes, PDF, etc.):
+        <input type="file" name="pruebas" id="pruebas" multiple accept="image/*,application/pdf" style="margin-top:0.3rem;">
+      </label>
+      <input type="text" name="solucion" placeholder="¿Qué solución espera? (reembolso, cambio, reparación, etc.)" required style="padding:0.5rem;border-radius:6px;border:1px solid #ccc;">
+      <div style="font-size:0.95rem;color:#555;">Fecha y hora de registro: <span id="fecha-hora-registro"></span></div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button type="submit" style="background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:bold;">Enviar reclamo</button>
+        <button type="button" id="btn-descargar-pdf" style="background:#1976d2;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:bold;">Descargar PDF</button>
+      </div>
     </form>
     <div id="libro-confirm" style="display:none;margin-top:1rem;color:#388e3c;font-weight:bold;text-align:center;">¡Reclamo enviado correctamente!</div>
   </div>
 </div>
 
 <script>
+  // Mostrar fecha y hora de registro
+  function setFechaHoraRegistro() {
+    const now = new Date();
+    const fechaHora = now.toLocaleString('es-PE', { hour12: false });
+    document.getElementById('fecha-hora-registro').textContent = fechaHora;
+  }
   // Abrir modal libro
   document.getElementById('btn-libro').onclick = function() {
     document.getElementById('modal-libro').style.display = 'flex';
     document.getElementById('libro-confirm').style.display = 'none';
     document.getElementById('form-libro').reset();
+    setFechaHoraRegistro();
   };
   // Cerrar modal libro
   function cerrarLibro() {
@@ -91,14 +108,56 @@
     const nombre = this.nombre.value;
     const correo = this.correo.value;
     const telefono = this.telefono.value;
-    const reclamo = this.reclamo.value;
-    const body = `Nombre: ${nombre}%0ACorreo: ${correo}%0ATeléfono: ${telefono}%0AReclamo: ${reclamo}`;
+    const fecha_compra = this.fecha_compra.value;
+    const numero_pedido = this.numero_pedido.value;
+    const descripcion = this.descripcion.value;
+    const solucion = this.solucion.value;
+    const fecha_hora = document.getElementById('fecha-hora-registro').textContent;
+    const body = `Nombre: ${nombre}%0ACorreo: ${correo}%0ATeléfono: ${telefono}%0AFecha de compra: ${fecha_compra}%0AN° de pedido: ${numero_pedido}%0ADescripción: ${descripcion}%0ASolución esperada: ${solucion}%0AFecha y hora de registro: ${fecha_hora}`;
     window.open(`mailto:tu_correo@ejemplo.com?subject=Reclamo%20desde%20Libro%20de%20Reclamaciones&body=${body}`);
     document.getElementById('libro-confirm').style.display = 'block';
     setTimeout(cerrarLibro, 2500);
   };
-</script>
 
+  // Descargar PDF del reclamo
+  document.getElementById('btn-descargar-pdf').onclick = function() {
+    const form = document.getElementById('form-libro');
+    const nombre = form.nombre.value;
+    const correo = form.correo.value;
+    const telefono = form.telefono.value;
+    const fecha_compra = form.fecha_compra.value;
+    const numero_pedido = form.numero_pedido.value;
+    const descripcion = form.descripcion.value;
+    const solucion = form.solucion.value;
+    const fecha_hora = document.getElementById('fecha-hora-registro').textContent;
+    let pruebas = document.getElementById('pruebas').files;
+    let pruebasList = '';
+    for (let i = 0; i < pruebas.length; i++) {
+      pruebasList += `- ${pruebas[i].name}\n`;
+    }
+    const doc = new window.jspdf.jsPDF();
+    doc.setFontSize(14);
+    doc.text('Libro de Reclamaciones', 15, 18);
+    doc.setFontSize(11);
+    let y = 30;
+    doc.text(`Nombre: ${nombre}`, 15, y); y += 8;
+    doc.text(`Correo: ${correo}`, 15, y); y += 8;
+    doc.text(`Teléfono: ${telefono}`, 15, y); y += 8;
+    doc.text(`Fecha de compra: ${fecha_compra}`, 15, y); y += 8;
+    doc.text(`N° de pedido: ${numero_pedido}`, 15, y); y += 8;
+    doc.text('Descripción:', 15, y); y += 8;
+    doc.text(doc.splitTextToSize(descripcion, 170), 20, y); y += 16;
+    doc.text('Pruebas adjuntas:', 15, y); y += 8;
+    if (pruebasList) {
+      doc.text(doc.splitTextToSize(pruebasList, 170), 20, y); y += 8;
+    } else {
+      doc.text('Ninguna', 20, y); y += 8;
+    }
+    doc.text(`Solución esperada: ${solucion}`, 15, y); y += 8;
+    doc.text(`Fecha y hora de registro: ${fecha_hora}`, 15, y);
+    doc.save('reclamo_libro_kaypacha.pdf');
+  };
+</script>
 <!-- ===================
   Pie de página con dirección y derechos
 =================== -->
