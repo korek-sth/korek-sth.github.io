@@ -537,6 +537,10 @@
         y += 8;
         doc.setTextColor(255,111,0);
         doc.text('Envía esta cotización al WhatsApp 923 037 869 para continuar con tu compra.', 15, y);
+        y += 8;
+        // Enlace directo a WhatsApp
+        doc.setTextColor(0,102,51);
+        doc.textWithLink('Enviar por WhatsApp', 15, y, { url: 'https://wa.me/51923037869' });
         doc.save('boleta_kaypacha.pdf');
       };
     </script>
