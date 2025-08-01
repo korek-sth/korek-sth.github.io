@@ -8,9 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-<!-- ===================
-  Encabezado con logo y título
-=================== -->
+<!--Encabezado y título-->
 <header>
   <div style="display:flex;align-items:center;justify-content:center;gap:1rem;">
     <h1 style="margin:0;">KAY PACHA Perú</h1>
@@ -33,7 +31,6 @@
     <label style="margin-left:1rem;">Buscar por nombre:</label>
     <input type="text" id="buscador-nombre" placeholder="Buscar producto..." oninput="buscarPorNombre()">
   </div>
-
   <!--Listado de productos-->
   <div class="productos" id="lista-productos">
   </div>
@@ -68,6 +65,9 @@
       <label class="libro-label">Adjuntar pruebas (imágenes, PDF, etc.):
         <input type="file" name="pruebas" id="pruebas" multiple accept="image/*,application/pdf">
       </label>
+      <div style="background:#fff3cd;color:#856404;border:1px solid #ffeeba;padding:0.7rem 1rem;border-radius:7px;margin:0.7rem 0 0.5rem 0;font-size:0.98rem;">
+        <strong>Importante:</strong> Si vas a enviar tu reclamo por correo, debes <u>adjuntar manualmente</u> los archivos seleccionados (imágenes o PDF) antes de enviar el correo. El sistema no puede adjuntarlos automáticamente.
+      </div>
       <div class="libro-row libro-fecha">
         <span>Fecha y hora de registro: <span id="fecha-hora-registro"></span></span>
       </div>
@@ -79,147 +79,7 @@
     <div id="libro-confirm" class="libro-confirm">¡Reclamo enviado correctamente!</div>
   </div>
 </div>
-<style>
-  .libro-modal-box {
-    background: #fff;
-    padding: 2.2rem 2rem 1.5rem 2rem;
-    border-radius: 16px;
-    max-width: 480px;
-    width: 97%;
-    position: relative;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    font-family: 'Segoe UI', Arial, sans-serif;
-    animation: libroFadeIn .3s;
-  }
-  @keyframes libroFadeIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  .libro-title {
-    color: #ff6f00;
-    margin-top: 0;
-    margin-bottom: 1.2rem;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-  }
-  .libro-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 1.7rem;
-    background: none;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  .libro-close:hover { color: #e53935; }
-  .libro-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .libro-row {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .libro-form input[type="text"],
-  .libro-form input[type="email"],
-  .libro-form input[type="tel"],
-  .libro-form input[type="date"],
-  .libro-form textarea {
-    flex: 1 1 0;
-    padding: 0.6rem 0.8rem;
-    border-radius: 7px;
-    border: 1.2px solid #d1d1d1;
-    font-size: 1rem;
-    background: #fafafa;
-    transition: border 0.2s;
-    margin-bottom: 0;
-  }
-  .libro-form input[type="text"]:focus,
-  .libro-form input[type="email"]:focus,
-  .libro-form input[type="tel"]:focus,
-  .libro-form input[type="date"]:focus,
-  .libro-form textarea:focus {
-    border: 1.2px solid #ff6f00;
-    outline: none;
-    background: #fffbe7;
-  }
-  .libro-form textarea {
-    min-height: 60px;
-    resize: vertical;
-  }
-  .libro-label {
-    font-size: 1rem;
-    color: #444;
-    margin-bottom: 0.2rem;
-    display: block;
-  }
-  .libro-form input[type="file"] {
-    margin-top: 0.3rem;
-    font-size: 0.97rem;
-  }
-  .libro-fecha {
-    font-size: 0.98rem;
-    color: #666;
-    margin-bottom: 0.2rem;
-  }
-  .libro-btns {
-    justify-content: flex-end;
-    gap: 0.7rem;
-  }
-  .libro-btn-enviar {
-    background: linear-gradient(90deg,#ff9800,#ff6f00);
-    color: #fff;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(255,111,0,0.08);
-    transition: background 0.2s;
-  }
-  .libro-btn-enviar:hover {
-    background: linear-gradient(90deg,#ff6f00,#ff9800);
-  }
-  .libro-btn-pdf {
-    background: #1976d2;
-    color: #fff;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(25,118,210,0.08);
-    transition: background 0.2s;
-  }
-  .libro-btn-pdf:hover {
-    background: #1251a3;
-  }
-  .libro-confirm {
-    display: none;
-    margin-top: 1.2rem;
-    color: #388e3c;
-    font-weight: bold;
-    text-align: center;
-    font-size: 1.08rem;
-    letter-spacing: 0.5px;
-  }
-  @media (max-width: 600px) {
-    .libro-modal-box {
-      padding: 1.2rem 0.5rem 1rem 0.5rem;
-      max-width: 99vw;
-    }
-    .libro-row { flex-direction: column; gap: 0.5rem; }
-  }
-</style>
+
 </div>
 <script>
   // Mostrar fecha y hora de registro
@@ -256,7 +116,7 @@
     setTimeout(cerrarLibro, 2500);
   };
   // Descargar PDF del reclamo
-  document.getElementById('btn-descargar-pdf').onclick = function() {
+  document.getElementById('btn-descargar-pdf').onclick = async function() {
     const form = document.getElementById('form-libro');
     const nombre = form.nombre.value;
     const correo = form.correo.value;
@@ -267,10 +127,6 @@
     const solucion = form.solucion.value;
     const fecha_hora = document.getElementById('fecha-hora-registro').textContent;
     let pruebas = document.getElementById('pruebas').files;
-    let pruebasList = '';
-    for (let i = 0; i < pruebas.length; i++) {
-      pruebasList += `- ${pruebas[i].name}\n`;
-    }
     const doc = new window.jspdf.jsPDF();
     doc.setFontSize(14);
     doc.text('Libro de Reclamaciones', 15, 18);
@@ -284,8 +140,46 @@
     doc.text('Descripción:', 15, y); y += 8;
     doc.text(doc.splitTextToSize(descripcion, 170), 20, y); y += 16;
     doc.text('Pruebas adjuntas:', 15, y); y += 8;
-    if (pruebasList) {
-      doc.text(doc.splitTextToSize(pruebasList, 170), 20, y); y += 8;
+    if (pruebas.length > 0) {
+      for (let i = 0; i < pruebas.length; i++) {
+        const file = pruebas[i];
+        if (file.type.startsWith('image/')) {
+          // Insertar miniatura de imagen
+          const reader = new FileReader();
+          await new Promise(resolve => {
+            reader.onload = function(e) {
+              const img = new Image();
+              img.onload = function() {
+                // Ajustar tamaño de miniatura
+                let imgWidth = 50;
+                let imgHeight = 50;
+                if (img.width > img.height) {
+                  imgHeight = img.height * (imgWidth / img.width);
+                } else {
+                  imgWidth = img.width * (imgHeight / img.height);
+                }
+                if (y + imgHeight > 270) { // Salto de página si es necesario
+                  doc.addPage();
+                  y = 20;
+                }
+                doc.text(`- ${file.name}`, 20, y);
+                y += 4;
+                doc.addImage(e.target.result, 'JPEG', 25, y, imgWidth, imgHeight);
+                y += imgHeight + 8;
+                resolve();
+              };
+              img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          });
+        } else if (file.type === 'application/pdf') {
+          doc.text(`- ${file.name} (PDF adjunto)`, 20, y);
+          y += 8;
+        } else {
+          doc.text(`- ${file.name} (archivo adjunto)`, 20, y);
+          y += 8;
+        }
+      }
     } else {
       doc.text('Ninguna', 20, y); y += 8;
     }
@@ -294,28 +188,154 @@
     doc.save('reclamo_libro_kaypacha.pdf');
   };
 </script>
-
 <!--Pie de página con dirección y derechos-->
-<footer>
-  <p>&copy; 2025 KAY PACHA Perú. Todos los derechos reservados.</p>
-  <p style="margin-top:1rem;font-size:1rem;">
-    Nos ubicamos en:
-    <a href="https://maps.app.goo.gl/HUuZ4rC7cbam1gDY8" target="_blank" style="color:#ffffff;text-decoration:underline;">Jr. Antonio Raymondi 326, interior 102</a>.
-  </p>
+<footer class="footer">
+  <div class="footer-row">
+    <div class="footer-col">
+      <span class="footer-label">Ubicación:</span>
+      <a href="https://maps.app.goo.gl/HUuZ4rC7cbam1gDY8" target="_blank" class="footer-link">Jr. Antonio Raymondi 326, interior 102</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-label">Legales:</span>
+      <a href="#" class="footer-link" id="link-terminos">Términos y condiciones</a>
+      <span class="footer-sep">|</span>
+      <a href="#" class="footer-link" id="link-privacidad">Aviso de privacidad</a>
+    </div>
+  </div>
+  <p class="footer-copyright">&copy; 2025 KAY PACHA Perú. Todos los derechos reservados.</p>
 </footer>
 
-<!-- ===================
-  Script principal de la tienda
-=================== -->
+<!-- Modal Aviso de Privacidad -->
+<div id="modal-privacidad" class="modal-privacidad" style="display:none;position:fixed;z-index:3000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+  <div class="privacidad-box" style="background:#fff;max-width:600px;width:90vw;padding:2rem 1.5rem;border-radius:12px;position:relative;overflow-y:auto;max-height:90vh;">
+    <button onclick="document.getElementById('modal-privacidad').style.display='none'" style="margin-bottom:1rem;float:right;background:#ff6f00;color:#fff;border:none;padding:0.5rem 1.2rem;border-radius:6px;cursor:pointer;font-size:1rem;">Cerrar</button>
+    <h2 style="margin-top:0;">POLÍTICA DE PRIVACIDAD</h2>
+    <p><strong>Última actualización:</strong> 1/08/2025</p>
+    <p>En SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ, nos comprometemos a proteger la privacidad de nuestros clientes y usuarios. Esta política explica cómo recolectamos, utilizamos y protegemos la información personal que nos proporcionas al visitar o realizar una compra en nuestro sitio web.</p>
+    <h3>1. IDENTIDAD DEL RESPONSABLE</h3>
+    <ul>
+      <li>Razón Social: SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ</li>
+      <li>RUC: 20603119861</li>
+      <li>Correo electrónico de contacto: sudikaypachaperu@gmail.com</li>
+      <li>Dirección fiscal: Jirón Antonio  Raymondi 326 interior 102</li>
+    </ul>
+    <h3>2. DATOS QUE RECOPILAMOS</h3>
+    <ul>
+      <li>Nombres y apellidos</li>
+      <li>DNI o RUC</li>
+      <li>Dirección de entrega</li>
+      <li>Número de teléfono</li>
+      <li>Correo electrónico</li>
+      <li>Información de pago (no almacenamos datos de tarjetas de crédito/débito)</li>
+    </ul>
+    <h3>3. FINALIDAD DEL TRATAMIENTO DE DATOS</h3>
+    <ul>
+      <li>Procesar pedidos y entregas</li>
+      <li>Emitir comprobantes de pago</li>
+      <li>Gestionar consultas o reclamos</li>
+      <li>Enviar información sobre nuestros productos y promociones (si das tu consentimiento)</li>
+    </ul>
+    <h3>4. CONSERVACIÓN DE LOS DATOS</h3>
+    <p>Tus datos serán almacenados únicamente durante el tiempo necesario para cumplir con las finalidades mencionadas, o según lo establecido por la normativa tributaria y comercial vigente.</p>
+    <h3>5. SEGURIDAD DE LA INFORMACIÓN</h3>
+    <p>Adoptamos medidas técnicas y organizativas adecuadas para proteger tus datos personales contra pérdida, mal uso, acceso no autorizado o divulgación.</p>
+    <h3>6. COMPARTICIÓN DE DATOS</h3>
+    <p>No vendemos, alquilamos ni compartimos tu información personal con terceros, salvo cuando sea necesario para cumplir con obligaciones legales o para procesar servicios contratados (por ejemplo, servicios de envío).</p>
+    <h3>7. DERECHOS DEL TITULAR DE LOS DATOS</h3>
+    <p>De acuerdo con la Ley N.º 29733, tienes los siguientes derechos:</p>
+    <ul>
+      <li>Acceso a tus datos personales.</li>
+      <li>Rectificación de datos incorrectos o desactualizados.</li>
+      <li>Cancelación de tus datos cuando ya no se requieran.</li>
+      <li>Oposición al tratamiento por motivos legítimos.</li>
+    </ul>
+    <p>Puedes ejercer estos derechos enviando una solicitud a nuestro correo: sudikaypachaperu@gmail.com</p>
+    <h3>8. USO DE COOKIES</h3>
+    <p>Este sitio web puede utilizar cookies para mejorar la experiencia del usuario. Puedes configurar tu navegador para rechazarlas, aunque esto podría afectar la funcionalidad del sitio.</p>
+    <h3>9. CAMBIOS EN LA POLÍTICA DE PRIVACIDAD</h3>
+    <p>Nos reservamos el derecho de actualizar esta política en cualquier momento. Te notificaremos de cualquier cambio publicando la nueva versión en esta página.</p>
+    <h3>10. ACEPTACIÓN DE LA POLÍTICA</h3>
+    <p>El uso del sitio web implica la aceptación de esta Política de Privacidad. Si no estás de acuerdo, por favor no utilices nuestros servicios.</p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('link-privacidad').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('modal-privacidad').style.display = 'flex';
+  };
+</script>
+</footer>
+
+<!-- Modal Términos y Condiciones -->
+<div id="modal-terminos" class="modal-terminos" style="display:none;position:fixed;z-index:3000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+  <div class="terminos-box" style="background:#fff;max-width:600px;width:90vw;padding:2rem 1.5rem;border-radius:12px;position:relative;overflow-y:auto;max-height:90vh;">
+    <!-- Botón 'Cerrar' abajo -->
+    <button onclick="document.getElementById('modal-terminos').style.display='none'" style="margin-bottom:1rem;float:right;background:#ff6f00;color:#fff;border:none;padding:0.5rem 1.2rem;border-radius:6px;cursor:pointer;font-size:1rem;">Cerrar</button>
+    <h2 style="margin-top:0;">TÉRMINOS Y CONDICIONES DE USO</h2>
+    <p><strong>Última actualización:</strong> 1/08/2025</p>
+    <p>Bienvenido al sitio web de SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ. Al acceder o utilizar nuestro sitio web, usted acepta los siguientes Términos y Condiciones. Si no está de acuerdo con estos términos, por favor no utilice este sitio.</p>
+    <h3>1. IDENTIFICACIÓN DE LA EMPRESA</h3>
+    <ul>
+      <li>Razón Social: SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ</li>
+      <li>RUC: 20603119861 </li>
+      <li>Correo electrónico de contacto: sudikaypachaperu@gmail.com</li>
+      <li>Teléfono: 999999999</li>
+      <li>Dirección fiscal: Jirón Antonio  Raymondi 326, interior 102</li>
+    </ul>
+    <h3>2. USO DEL SITIO WEB</h3>
+    <ul>
+      <li>Hacer un uso adecuado del contenido y servicios ofrecidos.</li>
+      <li>No realizar actividades ilegales o que infrinjan derechos de terceros.</li>
+      <li>No intentar acceder a áreas restringidas o vulnerar la seguridad del sitio.</li>
+    </ul>
+    <h3>3. PRODUCTOS Y PRECIOS</h3>
+    <p>Los productos ofrecidos son herramientas automotrices y afines. Las imágenes, descripciones y precios son referenciales y pueden estar sujetos a cambios sin previo aviso. SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ se reserva el derecho de modificar productos o cancelar pedidos por errores en precios o disponibilidad.</p>
+    <h3>4. PROCESO DE COMPRA</h3>
+    <p>El cliente debe proporcionar información veraz y completa. Al realizar un pedido, el cliente acepta las condiciones de venta y entrega. Una vez confirmado el pago, se procederá al despacho según las políticas vigentes de envío.</p>
+    <h3>5. FORMAS DE PAGO</h3>
+    <ul>
+      <li>Transferencias bancarias</li>
+      <li>Yape / Plin</li>
+      <li>Pago contra entrega (disponible en algunas zonas)</li>
+    </ul>
+    <p>Las transacciones están sujetas a verificación de identidad y disponibilidad del producto.</p>
+    <h3>6. ENVÍOS Y ENTREGAS</h3>
+    <p>Los plazos de entrega dependerán del destino y disponibilidad del producto. No nos responsabilizamos por retrasos ocasionados por terceros (couriers u operadores logísticos).</p>
+    <h3>7. POLÍTICA DE CAMBIOS Y DEVOLUCIONES</h3>
+    <p>Se aceptan devoluciones por defectos de fábrica dentro de los primeros 7 días hábiles de recibida la compra, presentando comprobante de pago. El producto debe estar en su empaque original y sin señales de uso.</p>
+    <h3>8. PROPIEDAD INTELECTUAL</h3>
+    <p>Todo el contenido de este sitio web (imágenes, textos, logos, diseño) es propiedad de SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ y está protegido por leyes de propiedad intelectual. Su uso no autorizado está prohibido.</p>
+    <h3>9. PROTECCIÓN DE DATOS</h3>
+    <p>Los datos personales recolectados serán tratados conforme a la Ley N.º 29733 - Ley de Protección de Datos Personales. No compartimos su información con terceros sin su consentimiento.</p>
+    <h3>10. RESPONSABILIDAD LIMITADA</h3>
+    <p>No nos hacemos responsables por daños o perjuicios derivados del mal uso del sitio web o por interrupciones del servicio. Nos reservamos el derecho de modificar o suspender el sitio en cualquier momento sin previo aviso.</p>
+    <h3>11. MODIFICACIONES A LOS TÉRMINOS</h3>
+    <p>Nos reservamos el derecho de actualizar estos términos en cualquier momento. Los cambios entrarán en vigor una vez publicados en esta página.</p>
+    <h3>12. LEGISLACIÓN APLICABLE</h3>
+    <p>Estos Términos y Condiciones se rigen por las leyes de la República del Perú. Cualquier disputa será resuelta en los tribunales competentes del distrito judicial correspondiente a la sede de la empresa.</p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('link-terminos').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('modal-terminos').style.display = 'flex';
+  };
+</script>
+    </div>
+  </div>
+</footer>
+<!--Script principal de la tienda-->
 <script>
   // Array de productos disponibles en la tienda
   const productos = [
-    { nombre: "Juego de llaves Stanley 20 piezas", marca: "Stanley", imagen: "https://www.ferropolis.pe/cdn/shop/products/85-783-1.webp?v=1663256988", precio: 120 },
-    { nombre: "Torre para auto Truper 3 toneladas", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/8450277-1000-1000/imageUrl_1.jpg?v=638679423222700000", precio: 120 },
-    { nombre: "Juego de llaves Sata 23 piezas", marca: "Sata", imagen: "https://images-na.ssl-images-amazon.com/images/I/A1GK2MAfF1L._AC_UL210_SR210,210_.jpg", precio: 360 },
+    { nombre: "Juego de llaves Stanley 20 piezas", marca: "Stanley", imagen: "https://www.ferropolis.pe/cdn/shop/products/85-783-1.webp?v=1663256988", precio: 130 },
+    { nombre: "Torre para auto Truper 3 toneladas", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/8450277-1000-1000/imageUrl_1.jpg?v=638679423222700000", precio: 130 },
+    { nombre: "Juego de llaves Sata 23 piezas", marca: "Sata", imagen: "https://images-na.ssl-images-amazon.com/images/I/A1GK2MAfF1L._AC_UL210_SR210,210_.jpg", precio: 370 },
     { nombre: "Maleta de herramientas Tooltech 216 piezas", marca: "Tooltech", imagen: "https://limacarstore.pe/wp-content/uploads/2021/10/38-1.webp", precio: 640 },
     { nombre: "Juego de llaves 14 Ferrawy piezas", marca: "Ferrawy", imagen: "https://http2.mlstatic.com/D_NQ_NP_865461-MPE50740765838_072022-O-juego-de-14-llaves-mixtas-combinadas-6mm-a-24mm-ferrawy.webp", precio: 75 },
-    { nombre: "Lagarto de 3 toneladas Uyustoll", marca: "Uyustool", imagen: "https://ferreman.pe/wp-content/uploads/2023/08/GAM103-600x600-1.jpg", precio: 690 },
+    { nombre: "Lagarto de 3 toneladas Uyustoll", marca: "Uyustool", imagen: "https://ferreman.pe/wp-content/uploads/2023/08/GAM103-600x600-1.jpg", precio: 650 },
   ];
   // Muestra los productos en pantalla según la lista recibida
   function mostrarProductos(lista) {
@@ -426,8 +446,7 @@
   // Inicializa la tienda mostrando todos los productos
   mostrarProductos(productos);
 </script>
-
-<!-- Modal de boleta y botón flotante-->
+<!--Modal de boleta y botón flotante-->
 <div id="modal-boleta" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
   <div style="background:#fff;padding:2rem;border-radius:10px;max-width:400px;width:90%;position:relative;">
     <button onclick="cerrarBoleta()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;">&times;</button>
@@ -446,29 +465,6 @@
         }
         const doc = new window.jspdf.jsPDF();
         let y = 20;
-        // Logo (si existe la imagen en la carpeta)
-        try {
-          const img = await fetch('imagenes/kaypacha_2.png').then(r => r.blob()).then(blob => new Promise(res => { const reader = new FileReader(); reader.onload = () => res(reader.result); reader.readAsDataURL(blob); }));
-          doc.addImage(img, 'PNG', 15, y, 22, 22);
-        } catch(e) {}
-        // Cabecera
-        doc.setFontSize(18);
-        doc.setTextColor(255,111,0);
-        doc.text('KAY PACHA Perú', 40, y+10);
-        doc.setFontSize(11);
-        doc.setTextColor(80,80,80);
-        doc.text('Herramientas para el desempeño automotriz', 40, y+18);
-        y += 30;
-        doc.setDrawColor(255,111,0);
-        doc.setLineWidth(0.7);
-        doc.line(15, y, 195, y);
-        y += 8;
-        doc.setFontSize(14);
-        doc.setTextColor(0,0,0);
-        doc.text('Cotización', 15, y);
-        doc.setFontSize(11);
-        doc.text('Fecha: ' + new Date().toLocaleString('es-PE', { hour12: false }), 120, y);
-        y += 8;
         // Tabla de productos
         doc.setFontSize(11);
         doc.setFillColor(255,243,224);
