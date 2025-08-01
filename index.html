@@ -130,16 +130,52 @@
     const doc = new window.jspdf.jsPDF();
     doc.setFontSize(14);
     doc.text('Libro de Reclamaciones', 15, 18);
+    // Cabecera naranja y logo
+    doc.setFillColor(255, 111, 0); // Naranja
+    doc.rect(0, 0, 210, 25, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(18);
+    doc.text('Libro de Reclamaciones', 15, 17);
+    doc.setFontSize(12);
+    doc.text('Kay Pacha Perú', 140, 17);
+    doc.setTextColor(0,0,0);
+    let y = 32;
+    // Bloque de datos del cliente y reclamo
     doc.setFontSize(11);
-    let y = 30;
-    doc.text(`Nombre: ${nombre}`, 15, y); y += 8;
-    doc.text(`Correo: ${correo}`, 15, y); y += 8;
-    doc.text(`Teléfono: ${telefono}`, 15, y); y += 8;
-    doc.text(`Fecha de compra: ${fecha_compra}`, 15, y); y += 8;
-    doc.text(`N° de pedido: ${numero_pedido}`, 15, y); y += 8;
-    doc.text('Descripción:', 15, y); y += 8;
-    doc.text(doc.splitTextToSize(descripcion, 170), 20, y); y += 16;
-    doc.text('Pruebas adjuntas:', 15, y); y += 8;
+    doc.setFillColor(255,243,224); // Fondo suave
+    doc.rect(15, y-5, 180, 44, 'F');
+    doc.setTextColor(255,111,0);
+    doc.text('Datos del Cliente', 18, y+2);
+    doc.setTextColor(0,0,0);
+    y += 8;
+    doc.text(`Nombre:`, 18, y); doc.text(`${nombre}`, 60, y);
+    y += 7;
+    doc.text(`Correo:`, 18, y); doc.text(`${correo}`, 60, y);
+    y += 7;
+    doc.text(`Teléfono:`, 18, y); doc.text(`${telefono}`, 60, y);
+    y += 7;
+    doc.text(`Fecha de compra:`, 18, y); doc.text(`${fecha_compra}`, 60, y);
+    y += 7;
+    doc.text(`N° de pedido:`, 18, y); doc.text(`${numero_pedido}`, 60, y);
+    y += 12;
+    // Descripción del reclamo
+    doc.setFillColor(255,243,224);
+    doc.rect(15, y-3, 180, 18, 'F');
+    doc.setTextColor(255,111,0);
+    doc.text('Descripción del Reclamo', 18, y+2);
+    doc.setTextColor(0,0,0);
+    y += 8;
+    let descLines = doc.splitTextToSize(descripcion, 170);
+    doc.text(descLines, 18, y+2);
+    y += 8 + (descLines.length-1)*6;
+    y += 6;
+    // Pruebas adjuntas
+    doc.setFillColor(255,243,224);
+    doc.rect(15, y-3, 180, 12, 'F');
+    doc.setTextColor(255,111,0);
+    doc.text('Pruebas adjuntas', 18, y+5);
+    doc.setTextColor(0,0,0);
+    y += 10;
     if (pruebas.length > 0) {
       for (let i = 0; i < pruebas.length; i++) {
         const file = pruebas[i];
@@ -150,21 +186,20 @@
             reader.onload = function(e) {
               const img = new Image();
               img.onload = function() {
-                // Ajustar tamaño de miniatura
-                let imgWidth = 50;
-                let imgHeight = 50;
+                let imgWidth = 40;
+                let imgHeight = 40;
                 if (img.width > img.height) {
                   imgHeight = img.height * (imgWidth / img.width);
                 } else {
                   imgWidth = img.width * (imgHeight / img.height);
                 }
-                if (y + imgHeight > 270) { // Salto de página si es necesario
+                if (y + imgHeight > 270) {
                   doc.addPage();
                   y = 20;
                 }
-                doc.text(`- ${file.name}`, 20, y);
+                doc.text(`- ${file.name}`, 25, y);
                 y += 4;
-                doc.addImage(e.target.result, 'JPEG', 25, y, imgWidth, imgHeight);
+                doc.addImage(e.target.result, 'JPEG', 30, y, imgWidth, imgHeight);
                 y += imgHeight + 8;
                 resolve();
               };
@@ -173,18 +208,38 @@
             reader.readAsDataURL(file);
           });
         } else if (file.type === 'application/pdf') {
-          doc.text(`- ${file.name} (PDF adjunto)`, 20, y);
+          doc.text(`- ${file.name} (PDF adjunto)`, 25, y);
           y += 8;
         } else {
-          doc.text(`- ${file.name} (archivo adjunto)`, 20, y);
+          doc.text(`- ${file.name} (archivo adjunto)`, 25, y);
           y += 8;
         }
       }
     } else {
-      doc.text('Ninguna', 20, y); y += 8;
+      doc.text('Ninguna', 25, y); y += 8;
     }
-    doc.text(`Solución esperada: ${solucion}`, 15, y); y += 8;
+    y += 2;
+    // Solución esperada
+    doc.setFillColor(255,243,224);
+    doc.rect(15, y-3, 180, 12, 'F');
+    doc.setTextColor(255,111,0);
+    doc.text('Solución esperada', 18, y+5);
+    doc.setTextColor(0,0,0);
+    y += 10;
+    doc.text(`${solucion}`, 18, y);
+    y += 8;
+    // Fecha y hora
+    doc.setFontSize(10);
+    doc.setTextColor(80,80,80);
     doc.text(`Fecha y hora de registro: ${fecha_hora}`, 15, y);
+    y += 8;
+    // Pie de página
+    doc.setFontSize(11);
+    doc.setTextColor(25,118,210);
+    doc.text('Gracias por registrar tu reclamo en Kay Pacha Perú.', 15, y);
+    y += 7;
+    doc.setTextColor(0,102,51);
+    doc.textWithLink('Contacto: WhatsApp 923 037 869', 15, y, { url: 'https://wa.me/51923037869' });
     doc.save('reclamo_libro_kaypacha.pdf');
   };
 </script>
@@ -331,12 +386,15 @@
   // Array de productos disponibles en la tienda
   const productos = [
     { nombre: "Juego de llaves Stanley 20 piezas", marca: "Stanley", imagen: "https://www.ferropolis.pe/cdn/shop/products/85-783-1.webp?v=1663256988", precio: 130 },
-    { nombre: "Torre para auto Truper 3 toneladas", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/8450277-1000-1000/imageUrl_1.jpg?v=638679423222700000", precio: 130 },
+    { nombre: "Caballetes para auto Truper 3 toneladas", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/8450277-1000-1000/imageUrl_1.jpg?v=638679423222700000", precio: 130 },
     { nombre: "Juego de llaves Sata 23 piezas", marca: "Sata", imagen: "https://images-na.ssl-images-amazon.com/images/I/A1GK2MAfF1L._AC_UL210_SR210,210_.jpg", precio: 370 },
     { nombre: "Maleta de herramientas Tooltech 216 piezas", marca: "Tooltech", imagen: "https://limacarstore.pe/wp-content/uploads/2021/10/38-1.webp", precio: 640 },
     { nombre: "Juego de llaves 14 Ferrawy piezas", marca: "Ferrawy", imagen: "https://http2.mlstatic.com/D_NQ_NP_865461-MPE50740765838_072022-O-juego-de-14-llaves-mixtas-combinadas-6mm-a-24mm-ferrawy.webp", precio: 75 },
-    { nombre: "Lagarto de 3 toneladas Uyustoll", marca: "Uyustool", imagen: "https://ferreman.pe/wp-content/uploads/2023/08/GAM103-600x600-1.jpg", precio: 650 },
-  ];
+    { nombre: "Gata tipo lagarto de 3 toneladas Uyustoll", marca: "Uyustool", imagen: "https://ferreman.pe/wp-content/uploads/2023/08/GAM103-600x600-1.jpg", precio: 650 },
+    { nombre: "Gata tipo lagarto de 2 toneladas Truper (caja)", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/6921298-1000-1000/image-842f23b11ea940c692858d284290fab4.jpg?v=638176152990830000", precio: 150 },
+    { nombre: "Gata de botella 2 toneladas Truper", marca: "Truper", imagen: "https://promart.vteximg.com.br/arquivos/ids/6921251-1000-1000/image-e09f5bfcdbab4d089c0baecc9ee570ae.jpg?v=638176152863300000", precio: 75 },
+    { nombre: "Caballetes para auto 6 toneladas Truper", marca: "Truper", imagen: "https://dojiw2m9tvv09.cloudfront.net/79550/product/X_14845-35578.jpg?72&time=1752920181", precio: 280 },
+  ]
   // Muestra los productos en pantalla según la lista recibida
   function mostrarProductos(lista) {
     const contenedor = document.getElementById("lista-productos");
@@ -446,29 +504,38 @@
   // Inicializa la tienda mostrando todos los productos
   mostrarProductos(productos);
 </script>
-<!--Modal de boleta y botón flotante-->
+<!--Modal de cotizacion y botón flotante-->
 <div id="modal-boleta" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
   <div style="background:#fff;padding:2rem;border-radius:10px;max-width:400px;width:90%;position:relative;">
     <button onclick="cerrarBoleta()" style="position:absolute;top:10px;right:10px;font-size:1.2rem;">&times;</button>
     <h2 style="color:#ff6f00;">Cotización</h2>
     <div id="contenido-boleta" style="user-select:none;"></div>
     <div style="margin-top:1.2rem;color:#444;font-size:0.98rem;background:#fffbe7;padding:0.7rem 1rem;border-radius:8px;border:1px solid #ffe0b2;">
-      <strong>Importante:</strong> Descarga tu boleta en PDF y adjúntala al enviar tu reclamo por WhatsApp o correo. Así se garantiza que los datos y precios no puedan ser modificados.
+      <strong>Importante:</strong> Descarga tu Cotización en PDF y adjúntala al enviar tu reclamo por WhatsApp o correo. Así se garantiza que los datos y precios no puedan ser modificados.
     </div>
-    <button id="btn-descargar-boleta-pdf" style="margin-top:1.2rem;background:#1976d2;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;width:100%;font-size:1rem;font-weight:bold;">Descargar boleta en PDF</button>
-    <button onclick="vaciarCarrito()" style="margin-top:0.5rem;background:#e53935;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:8px;cursor:pointer;width:100%;font-size:1rem;">Vaciar boleta</button>
+    <button id="btn-descargar-boleta-pdf" style="margin-top:1.2rem;background:#1976d2;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;width:100%;font-size:1rem;font-weight:bold;">Descargar cotización en PDF</button>
+    <button onclick="vaciarCarrito()" style="margin-top:0.5rem;background:#e53935;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:8px;cursor:pointer;width:100%;font-size:1rem;">Vaciar cotización</button>
     <script>
-      document.getElementById('btn-descargar-boleta-pdf').onclick = async function() {
+      document.getElementById('btn-descargar-boleta-pdf').onclick = function() {
         if (carrito.length === 0) {
           alert('No hay productos en el carrito.');
           return;
         }
         const doc = new window.jspdf.jsPDF();
-        let y = 20;
+        // Cabecera naranja y logo
+        doc.setFillColor(255, 111, 0); // Naranja
+        doc.rect(0, 0, 210, 25, 'F');
+        doc.setTextColor(255,255,255);
+        doc.setFontSize(18);
+        doc.text('Cotización', 15, 17);
+        doc.setFontSize(12);
+        doc.text('Kay Pacha Perú', 140, 17);
+        doc.setTextColor(0,0,0);
+        let y = 32;
         // Tabla de productos
         doc.setFontSize(11);
-        doc.setFillColor(255,243,224);
-        doc.rect(15, y-4, 180, 9, 'F');
+        doc.setFillColor(255,243,224); // Fondo suave
+        doc.rect(15, y-5, 180, 9, 'F');
         doc.setTextColor(255,111,0);
         doc.text('Producto', 18, y+2);
         doc.text('Cant.', 90, y+2, {align:'right'});
@@ -506,13 +573,13 @@
         // Enlace directo a WhatsApp
         doc.setTextColor(0,102,51);
         doc.textWithLink('Enviar por WhatsApp', 15, y, { url: 'https://wa.me/51923037869' });
-        doc.save('boleta_kaypacha.pdf');
+        doc.save('cotizacion_kaypacha.pdf');
       };
     </script>
   </div>
   <
 </div>
-<button id="ver-boleta" onclick="mostrarBoleta()" style="position:fixed;bottom:90px;right:20px;z-index:999;background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;">Ver boleta</button>
+<button id="ver-boleta" onclick="mostrarBoleta()" style="position:fixed;bottom:90px;right:20px;z-index:999;background:#ff6f00;color:#fff;border:none;padding:0.7rem 1.2rem;border-radius:8px;cursor:pointer;">Ver cotización</button>
 
 </body>
 </html>
