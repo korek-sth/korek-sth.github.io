@@ -1,0 +1,359 @@
+<!-- Página de contacto de Ferreriwork -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos y enlaces de estilos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mas | Ferreriwork</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header con logo y navegación principal -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-header">
+                <img src="images/logo ferreri.jpg" alt="Logo Ferreriwork" class="logo-img" />
+                <h1 class="logo">Ferreri-<span>work</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="ofertas.html">Ofertas</a>
+                <a href="Mas.html">Mas</a>
+            </nav>
+        </div>
+    </header>
+    <!-- Contenido principal -->
+    <main class="main">
+        <section class="mas">
+            <div class="container">
+                <h2 style="text-align:center; color:#ff6600; font-size:2.1em; margin-top:1.5em; margin-bottom:0.5em; font-weight:900; letter-spacing:1px;">Información y servicios</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.2em; justify-content: center; margin-top: 2em;">
+                    <button class="btn-principal" id="btn-reclamaciones" style="min-width:210px; font-weight:bold; background:#ff6600; color:#fff; border:none; border-radius:8px; padding:1.1em 2em; box-shadow:0 2px 12px #8883; cursor:pointer; display:flex; align-items:center; gap:0.7em; font-size:1.08em;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="icon" style="width:28px;vertical-align:middle;">Libro de reclamaciones
+                    </button>
+                    <button class="btn-principal" id="btn-terminos" style="min-width:210px; font-weight:bold; background:#ff6600; color:#fff; border:none; border-radius:8px; padding:1.1em 2em; box-shadow:0 2px 12px #8883; cursor:pointer; display:flex; align-items:center; gap:0.7em; font-size:1.08em;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828859.png" alt="icon" style="width:28px;vertical-align:middle;">Términos y condiciones
+                    </button>
+                    <button class="btn-principal" id="btn-privacidad" style="min-width:210px; font-weight:bold; background:#ff6600; color:#fff; border:none; border-radius:8px; padding:1.1em 2em; box-shadow:0 2px 12px #8883; cursor:pointer; display:flex; align-items:center; gap:0.7em; font-size:1.08em;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828961.png" alt="icon" style="width:28px;vertical-align:middle;">Aviso de privacidad
+                    </button>
+                    <button class="btn-principal" id="btn-ubicacion" style="min-width:210px; font-weight:bold; background:#ff6600; color:#fff; border:none; border-radius:8px; padding:1.1em 2em; box-shadow:0 2px 12px #8883; cursor:pointer; display:flex; align-items:center; gap:0.7em; font-size:1.08em;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="icon" style="width:28px;vertical-align:middle;">Ubicación
+                    </button>
+                </div>
+                <hr style="margin:2.5em auto 1.5em auto; border:0; border-top:2px solid #ff6600; max-width:600px;">
+                <!-- Modales -->
+                <div id="modal-reclamaciones" class="modal-mas" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0008; z-index:1000; align-items:center; justify-content:center;">
+                    <div id="modal-libro" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fff; border-radius:10px; max-width:95vw; width:600px; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
+                        <button onclick="cerrarLibro()" class="libro-close" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
+                        <h2 class="libro-title" style="color:#ff6600; text-align:center; margin-bottom:1em;"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="icon" style="width:32px;vertical-align:middle;margin-right:8px;">Libro de Reclamaciones</h2>
+                        <form id="form-libro" autocomplete="off" class="libro-form" style="width:100%; max-width:520px; margin:auto;">
+                        <div class="libro-row" style="display:flex; gap:1em; margin-bottom:1em;">
+                            <input type="text" name="nombre" placeholder="Nombre completo" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                            <input type="email" name="correo" placeholder="Correo electrónico" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                        </div>
+                        <div class="libro-row" style="display:flex; gap:1em; margin-bottom:1em;">
+                            <input type="tel" name="telefono" placeholder="Teléfono" style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                            <input type="date" name="fecha_compra" placeholder="Fecha de compra" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                        </div>
+                        <div class="libro-row" style="display:flex; gap:1em; margin-bottom:1em;">
+                            <input type="text" name="numero_pedido" placeholder="N° de pedido/transacción" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                            <input type="text" name="solucion" placeholder="¿Qué solución espera? (reembolso, cambio, reparación, etc.)" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                        </div>
+                        <textarea name="descripcion" placeholder="Descripción detallada del problema (ej: producto defectuoso, entrega tardía, publicidad engañosa)" required rows="3" style="width:100%; padding:0.7em; border-radius:5px; border:1px solid #ccc; margin-bottom:1em;"></textarea>
+                        <label class="libro-label" style="margin-bottom:1em; display:block;">Adjuntar pruebas (imágenes, PDF, etc.):
+                            <input type="file" name="pruebas" id="pruebas" multiple accept="image/*,application/pdf" style="margin-top:0.5em;">
+                        </label>
+                        <div style="background:#fff3cd;color:#856404;border:1px solid #ffeeba;padding:0.7rem 1rem;border-radius:7px;margin:0.7rem 0 0.5rem 0;font-size:0.98rem;">
+                            <strong>Importante:</strong> Si vas a enviar tu reclamo por correo, debes <u>adjuntar manualmente</u> los archivos seleccionados (imágenes o PDF) antes de enviar el correo. El sistema no puede adjuntarlos automáticamente.
+                        </div>
+                        <div class="libro-row libro-fecha" style="margin:1em 0;">
+                            <span>Fecha y hora de registro: <span id="fecha-hora-registro"></span></span>
+                        </div>
+                        <div class="libro-row libro-btns" style="display:flex; gap:1em; justify-content:center; margin-top:1em;">
+                            <button type="submit" class="libro-btn-enviar" style="background:#ff6600; color:#fff; border:none; border-radius:5px; padding:0.7em 1.5em; font-weight:bold; cursor:pointer;">Enviar reclamo</button>
+                            <button type="button" id="btn-descargar-pdf" class="libro-btn-pdf" style="background:#25d366; color:#fff; border:none; border-radius:5px; padding:0.7em 1.5em; font-weight:bold; cursor:pointer;">Descargar PDF</button>
+                        </div>
+                        </form>
+                        <div id="libro-confirm" class="libro-confirm" style="display:none; color:#28a745; font-weight:bold; text-align:center; margin-top:1em;">¡Reclamo enviado correctamente!</div>
+                    </div>
+                </div>
+                <div id="modal-terminos" class="modal-mas" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0008; z-index:1000; align-items:center; justify-content:center;">
+                    <div style="background:#fff; border-radius:10px; max-width:95vw; width:600px; max-height:90vh; overflow-y:auto; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
+                        <button class="cerrar-modal-mas" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
+                        <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">TÉRMINOS Y CONDICIONES DE USO</h3>
+                        <div style="font-size:0.98em; color:#444; text-align:left;">
+                            <strong>Última actualización: 6/08/2025</strong><br><br>
+                            Bienvenido al sitio web de FERRERI-WORK S.A.C. Al acceder o utilizar nuestro sitio web, usted acepta los siguientes Términos y Condiciones. Si no está de acuerdo con estos términos, por favor no utilice este sitio.<br><br>
+                            <strong>1. IDENTIFICACIÓN DE LA EMPRESA</strong><br>
+                            Razón Social: FERRERI-WORK S.A.C<br>
+                            RUC: 20544587111<br>
+                            Correo electrónico de contacto: Ferreri-work@hotmail.com<br>
+                            Teléfono: 934163957<br>
+                            Dirección fiscal: Jr. Saenz Peña Nro. 110 Int. 206 (Altura de la Cuadra 2 de Av. Iquitos)<br><br>
+                            <strong>2. USO DEL SITIO WEB</strong><br>
+                            Al utilizar este sitio, el usuario se compromete a:<br>
+                            <ul style="margin-left:1em;">
+                                <li>Hacer un uso adecuado del contenido y servicios ofrecidos.</li>
+                                <li>No realizar actividades ilegales o que infrinjan derechos de terceros.</li>
+                                <li>No intentar acceder a áreas restringidas o vulnerar la seguridad del sitio.</li>
+                            </ul>
+                            <strong>3. PRODUCTOS Y PRECIOS</strong><br>
+                            Los productos ofrecidos son herramientas automotrices y afines. Las imágenes, descripciones y precios son referenciales y pueden estar sujetos a cambios sin previo aviso. SUMINISTRO Y DISTRIBUCIÓN KAY PACHA PERÚ se reserva el derecho de modificar productos o cancelar pedidos por errores en precios o disponibilidad.<br><br>
+                            <strong>4. PROCESO DE COMPRA</strong><br>
+                            El cliente debe proporcionar información veraz y completa. Al realizar un pedido, el cliente acepta las condiciones de venta y entrega. Una vez confirmado el pago, se procederá al despacho según las políticas vigentes de envío.<br><br>
+                            <strong>5. FORMAS DE PAGO</strong><br>
+                            Aceptamos los siguientes métodos de pago:<br>
+                            <ul style="margin-left:1em;">
+                                <li>Transferencias bancarias</li>
+                                <li>Yape / Plin</li>
+                                <li>Pago contra entrega (disponible en algunas zonas)</li>
+                            </ul>
+                            Las transacciones están sujetas a verificación de identidad y disponibilidad del producto.<br><br>
+                            <strong>6. ENVÍOS Y ENTREGAS</strong><br>
+                            Los plazos de entrega dependerán del destino y disponibilidad del producto. No nos responsabilizamos por retrasos ocasionados por terceros (couriers u operadores logísticos).<br><br>
+                            <strong>7. POLÍTICA DE CAMBIOS Y DEVOLUCIONES</strong><br>
+                            Se aceptan devoluciones por defectos de fábrica dentro de los primeros 7 días hábiles de recibida la compra, presentando comprobante de pago. El producto debe estar en su empaque original y sin señales de uso.<br><br>
+                            <strong>8. PROPIEDAD INTELECTUAL</strong><br>
+                            Todo el contenido de este sitio web (imágenes, textos, logos, diseño) es propiedad de FERRERI-WORK S.A.C y está protegido por leyes de propiedad intelectual. Su uso no autorizado está prohibido.<br><br>
+                            <strong>9. PROTECCIÓN DE DATOS</strong><br>
+                            Los datos personales recolectados serán tratados conforme a la Ley N.º 29733 - Ley de Protección de Datos Personales. No compartimos su información con terceros sin su consentimiento.<br><br>
+                            <strong>10. RESPONSABILIDAD LIMITADA</strong><br>
+                            No nos hacemos responsables por daños o perjuicios derivados del mal uso del sitio web o por interrupciones del servicio. Nos reservamos el derecho de modificar o suspender el sitio en cualquier momento sin previo aviso.<br><br>
+                            <strong>11. MODIFICACIONES A LOS TÉRMINOS</strong><br>
+                            Nos reservamos el derecho de actualizar estos términos en cualquier momento. Los cambios entrarán en vigor una vez publicados en esta página.<br><br>
+                            <strong>12. LEGISLACIÓN APLICABLE</strong><br>
+                            Estos Términos y Condiciones se rigen por las leyes de la República del Perú. Cualquier disputa será resuelta en los tribunales competentes del distrito judicial correspondiente a la sede de la empresa.<br>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-privacidad" class="modal-mas" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0008; z-index:1000; align-items:center; justify-content:center;">
+                    <div style="background:#fff; border-radius:10px; max-width:95vw; width:600px; max-height:90vh; overflow-y:auto; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
+                        <button class="cerrar-modal-mas" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
+                        <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">POLÍTICA DE PRIVACIDAD</h3>
+                        <div style="font-size:0.98em; color:#444; text-align:left;">
+                            <strong>Última actualización: 6/08/2025</strong><br><br>
+                            En FERRERI-WORK S.A.C, nos comprometemos a proteger la privacidad de nuestros clientes y usuarios. Esta política explica cómo recolectamos, utilizamos y protegemos la información personal que nos proporcionas al visitar o realizar una compra en nuestro sitio web.<br><br>
+                            <strong>1. IDENTIDAD DEL RESPONSABLE</strong><br>
+                            Razón Social: FERRERI-WORK S.A.C<br>
+                            RUC: 20544587111<br>
+                            Correo electrónico de contacto: Ferreri-work@hotmail.com<br>
+                            Dirección fiscal: Jr. Saenz Peña Nro. 110 Int. 206 (Altura de la Cuadra 2 de Av. Iquitos)<br><br>
+                            <strong>2. DATOS QUE RECOPILAMOS</strong><br>
+                            Podemos recopilar los siguientes datos personales:<br>
+                            <ul style="margin-left:1em;">
+                                <li>Nombres y apellidos</li>
+                                <li>DNI o RUC</li>
+                                <li>Dirección de entrega</li>
+                                <li>Número de teléfono</li>
+                                <li>Correo electrónico</li>
+                                <li>Información de pago (no almacenamos datos de tarjetas de crédito/débito)</li>
+                            </ul>
+                            <strong>3. FINALIDAD DEL TRATAMIENTO DE DATOS</strong><br>
+                            Usamos tu información personal para:<br>
+                            <ul style="margin-left:1em;">
+                                <li>Procesar pedidos y entregas</li>
+                                <li>Emitir comprobantes de pago</li>
+                                <li>Gestionar consultas o reclamos</li>
+                                <li>Enviar información sobre nuestros productos y promociones (si das tu consentimiento)</li>
+                            </ul>
+                            <strong>4. CONSERVACIÓN DE LOS DATOS</strong><br>
+                            Tus datos serán almacenados únicamente durante el tiempo necesario para cumplir con las finalidades mencionadas, o según lo establecido por la normativa tributaria y comercial vigente.<br><br>
+                            <strong>5. SEGURIDAD DE LA INFORMACIÓN</strong><br>
+                            Adoptamos medidas técnicas y organizativas adecuadas para proteger tus datos personales contra pérdida, mal uso, acceso no autorizado o divulgación.<br><br>
+                            <strong>6. COMPARTICIÓN DE DATOS</strong><br>
+                            No vendemos, alquilamos ni compartimos tu información personal con terceros, salvo cuando sea necesario para cumplir con obligaciones legales o para procesar servicios contratados (por ejemplo, servicios de envío).<br><br>
+                            <strong>7. DERECHOS DEL TITULAR DE LOS DATOS</strong><br>
+                            De acuerdo con la Ley N.º 29733, tienes los siguientes derechos:<br>
+                            <ul style="margin-left:1em;">
+                                <li>Acceso a tus datos personales.</li>
+                                <li>Rectificación de datos incorrectos o desactualizados.</li>
+                                <li>Cancelación de tus datos cuando ya no se requieran.</li>
+                                <li>Oposición al tratamiento por motivos legítimos.</li>
+                            </ul>
+                            Puedes ejercer estos derechos enviando una solicitud a nuestro correo: Ferreri-work@hotmail.com<br><br>
+                            <strong>8. USO DE COOKIES</strong><br>
+                            Este sitio web puede utilizar cookies para mejorar la experiencia del usuario. Puedes configurar tu navegador para rechazarlas, aunque esto podría afectar la funcionalidad del sitio.<br><br>
+                            <strong>9. CAMBIOS EN LA POLÍTICA DE PRIVACIDAD</strong><br>
+                            Nos reservamos el derecho de actualizar esta política en cualquier momento. Te notificaremos de cualquier cambio publicando la nueva versión en esta página.<br><br>
+                            <strong>10. ACEPTACIÓN DE LA POLÍTICA</strong><br>
+                            El uso del sitio web implica la aceptación de esta Política de Privacidad. Si no estás de acuerdo, por favor no utilices nuestros servicios.<br>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-ubicacion" class="modal-mas" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0008; z-index:1000; align-items:center; justify-content:center;">
+                    <div style="background:#fff; border-radius:10px; max-width:95vw; width:600px; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
+                        <button class="cerrar-modal-mas" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
+                        <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">Ubicación</h3>
+                        <div style="text-align:center;">
+                            <p style="font-size:1.08em; color:#444; margin-bottom:1em;">Nuestra tienda se encuentra en Jr. Saéns peña 110.</p>
+                            <img src="images/logo ferreri.jpg" alt="Foto de la tienda Ferreriwork" style="width:75%; max-width:450px; height:auto; border-radius:10px; box-shadow:0 2px 12px #8883; margin-bottom:1em; object-fit:contain;">
+                            <a href="https://maps.app.goo.gl/dCCL48LpXKezV6zL8" target="_blank" style="display:inline-block; text-decoration:none;">
+                                <div style="margin-top:0.5em;">
+                                    <span style="color:#ff6600; font-weight:bold; font-size:1.08em;">Ver en Google Maps</span>
+                                    <svg style="vertical-align:middle; margin-left:6px;" width="22" height="22" fill="#25d366" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"></path></svg>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+        // Abrir modales
+        document.getElementById('btn-reclamaciones').onclick = function() {
+            document.getElementById('modal-reclamaciones').style.display = 'flex';
+        };
+        document.getElementById('btn-terminos').onclick = function() {
+            document.getElementById('modal-terminos').style.display = 'flex';
+        };
+        document.getElementById('btn-privacidad').onclick = function() {
+            document.getElementById('modal-privacidad').style.display = 'flex';
+        };
+        document.getElementById('btn-ubicacion').onclick = function() {
+            document.getElementById('modal-ubicacion').style.display = 'flex';
+        };
+        // Cerrar modales
+        document.querySelectorAll('.cerrar-modal-mas').forEach(btn => {
+            btn.onclick = function() {
+                btn.closest('.modal-mas').style.display = 'none';
+            };
+        });
+
+        // Cerrar modal libro de reclamaciones
+        function cerrarLibro() {
+            document.getElementById('modal-reclamaciones').style.display = 'none';
+            document.getElementById('libro-confirm').style.display = 'none';
+            document.getElementById('form-libro').reset();
+        }
+
+        // Mostrar fecha y hora de registro
+        function mostrarFechaHora() {
+            const ahora = new Date();
+            const fecha = ahora.toLocaleDateString('es-PE');
+            const hora = ahora.toLocaleTimeString('es-PE');
+            document.getElementById('fecha-hora-registro').textContent = fecha + ' ' + hora;
+        }
+        mostrarFechaHora();
+
+        // Enviar reclamo por mailto
+        document.getElementById('form-libro').onsubmit = function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const datos = {
+                nombre: form.nombre.value,
+                correo: form.correo.value,
+                telefono: form.telefono.value,
+                fecha_compra: form.fecha_compra.value,
+                numero_pedido: form.numero_pedido.value,
+                solucion: form.solucion.value,
+                descripcion: form.descripcion.value
+            };
+            const fechaRegistro = document.getElementById('fecha-hora-registro').textContent;
+            let cuerpo = `Libro de Reclamaciones Ferreriwork%0D%0A`;
+            cuerpo += `Nombre: ${datos.nombre}%0D%0A`;
+            cuerpo += `Correo: ${datos.correo}%0D%0A`;
+            cuerpo += `Teléfono: ${datos.telefono}%0D%0A`;
+            cuerpo += `Fecha de compra: ${datos.fecha_compra}%0D%0A`;
+            cuerpo += `N° de pedido/transacción: ${datos.numero_pedido}%0D%0A`;
+            cuerpo += `Solución esperada: ${datos.solucion}%0D%0A`;
+            cuerpo += `Descripción: ${datos.descripcion}%0D%0A`;
+            cuerpo += `Fecha y hora de registro: ${fechaRegistro}%0D%0A`;
+            cuerpo += `%0D%0A(Recuerda adjuntar manualmente las pruebas)`;
+            const mailto = `mailto:Ferreri-work@hotmail.com?subject=Reclamo Ferreriwork&body=${cuerpo}`;
+            window.open(mailto);
+            document.getElementById('libro-confirm').style.display = 'block';
+        };
+
+        // Descargar PDF con jsPDF
+        document.getElementById('btn-descargar-pdf').onclick = function() {
+            // Cargar jsPDF si no está
+            if (typeof window.jspdf === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                script.onload = generarPDF;
+                document.body.appendChild(script);
+            } else {
+                generarPDF();
+            }
+        };
+
+        function generarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const form = document.getElementById('form-libro');
+            const datos = {
+                nombre: form.nombre.value,
+                correo: form.correo.value,
+                telefono: form.telefono.value,
+                fecha_compra: form.fecha_compra.value,
+                numero_pedido: form.numero_pedido.value,
+                solucion: form.solucion.value,
+                descripcion: form.descripcion.value
+            };
+            const fechaRegistro = document.getElementById('fecha-hora-registro').textContent;
+            // Encabezado con color y logo
+            doc.setFillColor(255,102,0);
+            doc.rect(0, 0, 210, 28, 'F');
+            // Logo Ferreriwork (puedes reemplazar por tu logo en base64)
+            // Ejemplo: const logoFerreri = 'data:image/jpeg;base64,...';
+            // doc.addImage(logoFerreri, 'JPEG', 12, 6, 18, 18);
+            doc.setFontSize(18);
+            doc.setTextColor(255,255,255);
+            doc.text('Libro de Reclamaciones Ferreriwork', 105, 18, { align: 'center' });
+            doc.setFontSize(12);
+            doc.setTextColor(80,80,80);
+            doc.text('Fecha de registro: ' + fechaRegistro, 14, 34);
+            doc.setDrawColor(255,102,0);
+            doc.line(14, 38, 196, 38);
+            let y = 46;
+            // Datos del cliente
+            doc.setFontSize(13);
+            doc.setTextColor(255,102,0);
+            doc.text('Datos del cliente', 14, y);
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(40,40,40);
+            doc.text(`Nombre: ${datos.nombre}`, 14, y); y += 7;
+            doc.text(`Correo: ${datos.correo}`, 14, y); y += 7;
+            doc.text(`Teléfono: ${datos.telefono}`, 14, y); y += 7;
+            doc.text(`Fecha de compra: ${datos.fecha_compra}`, 14, y); y += 7;
+            doc.text(`N° de pedido/transacción: ${datos.numero_pedido}`, 14, y); y += 7;
+            doc.setDrawColor(200,200,200);
+            doc.line(14, y+2, 196, y+2);
+            y += 10;
+            // Reclamo
+            doc.setFontSize(13);
+            doc.setTextColor(255,102,0);
+            doc.text('Detalle del reclamo', 14, y);
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(40,40,40);
+            doc.text(`Solución esperada: ${datos.solucion}`, 14, y); y += 7;
+            doc.text('Descripción:', 14, y); y += 7;
+            doc.setFontSize(12);
+            doc.setTextColor(40,40,40);
+            doc.text(datos.descripcion, 14, y, { maxWidth: 180 });
+            y += 18;
+            doc.setDrawColor(200,200,200);
+            doc.line(14, y, 196, y);
+            y += 10;
+            // Pie de página
+            doc.setFontSize(10);
+            doc.setTextColor(120,120,120);
+            doc.text('Ferreriwork | www.ferreriwork.com', 105, 285, { align: 'center' });
+            doc.save('Reclamo_Ferreriwork.pdf');
+        }
+        </script>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Ferreriwork. Todos los derechos reservados.</p>
+            <p style="font-size:0.98em; color:#888; margin-top:0.3em;">
+                Dirección: <a href="https://maps.app.goo.gl/ESuVUjNBkGiccMqf7" target="_blank" style="color:#ff6600; text-decoration:underline;">Jron. Saéns Peña 110</a>
+    </footer>
+</body>
+</html>
