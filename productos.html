@@ -161,7 +161,7 @@
         </section>
         <!-- Modal de cotización -->
         <div id="modal-cotizacion" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#0008; z-index:1000; align-items:center; justify-content:center;">
-            <div style="background:#fff; border-radius:10px; max-width:95vw; width:400px; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
+            <div style="background:#fff; border-radius:10px; max-width:95vw; width:600px; padding:2.5em 2em; box-shadow:0 4px 24px #0003; position:relative;">
                 <button id="cerrar-modal-cotizacion" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
                 <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">Cotización seleccionada</h3>
                 <div id="cotizacion-lista"></div>
@@ -212,18 +212,18 @@
                 lista.innerHTML = '<p style="color:#c00; text-align:center;">No hay productos seleccionados para cotizar.</p>';
             } else {
                 let html = '<table style="width:100%; border-collapse:collapse;">';
-                html += '<tr style="background:#ff6600; color:#fff;"><th style="padding:6px;">Producto</th><th style="padding:6px;">Marca</th><th style="padding:6px;">Cantidad</th><th style="padding:6px;">Precio Unitario</th><th style="padding:6px;">Subtotal</th></tr>';
+                html += '<tr style="background:#ff6600; color:#fff;"><th style="padding:6px;">Producto</th><th style="padding:6px;">Marca</th><th style="padding:6px;">Cantidad</th><th style="padding:6px;">Precio Unitario</th><th style="padding:6px;">Subtotal</th><th style="padding:6px;">Eliminar</th></tr>';
                 let total = 0;
-                seleccionados.forEach(card => {
+                seleccionados.forEach((card, idx) => {
                     const nombre = card.querySelector('h4').textContent;
                     const marca = card.querySelector('.marca').textContent.replace('Marca: ','');
                     const precio = parseFloat(card.querySelector('.precio').textContent.replace('S/','').replace(',','.'));
                     const cantidad = parseInt(card.querySelector('.cantidad-cotizar').value, 10);
                     const subtotal = precio * cantidad;
                     total += subtotal;
-                    html += `<tr><td style="padding:6px; border-bottom:1px solid #eee;">${nombre}</td><td style="padding:6px; border-bottom:1px solid #eee;">${marca}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:center;"><input type='number' min='1' value='${cantidad}' data-nombre='${nombre}' class='modal-cantidad' style='width:45px; text-align:center; border-radius:4px; border:1px solid #ccc;'/></td><td style="padding:6px; border-bottom:1px solid #eee;">S/ ${precio.toFixed(2)}</td><td style="padding:6px; border-bottom:1px solid #eee;">S/ ${subtotal.toFixed(2)}</td></tr>`;
+                    html += `<tr><td style="padding:6px; border-bottom:1px solid #eee;">${nombre}</td><td style="padding:6px; border-bottom:1px solid #eee;">${marca}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:center;"><input type='number' min='1' value='${cantidad}' data-nombre='${nombre}' class='modal-cantidad' style='width:45px; text-align:center; border-radius:4px; border:1px solid #ccc;'/></td><td style="padding:6px; border-bottom:1px solid #eee;">S/ ${precio.toFixed(2)}</td><td style="padding:6px; border-bottom:1px solid #eee;">S/ ${subtotal.toFixed(2)}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:center;"><button class='btn-eliminar-producto' data-nombre='${nombre}' style='background:#c00; color:#fff; border:none; border-radius:4px; padding:0.3em 0.7em; font-size:1em; cursor:pointer;'>✕</button></td></tr>`;
                 });
-                html += `<tr style="font-weight:bold;"><td colspan="4" style="text-align:right; padding:8px;">Total:</td><td style="padding:8px; color:#ff6600;">S/ ${total.toFixed(2)}</td></tr>`;
+                html += `<tr style="font-weight:bold;"><td colspan="5" style="text-align:right; padding:8px;">Total:</td><td style="padding:8px; color:#ff6600;">S/ ${total.toFixed(2)}</td></tr>`;
                 html += '</table>';
                 lista.innerHTML = html;
                 // Evento para actualizar cantidad desde el modal
@@ -237,6 +237,19 @@
                         document.querySelectorAll('.producto-card').forEach(card => {
                             if (card.querySelector('h4').textContent === nombreProd) {
                                 card.querySelector('.cantidad-cotizar').value = nuevaCantidad;
+                            }
+                        });
+                        // Volver a mostrar el modal actualizado
+                        document.getElementById('btn-ver-cotizacion').click();
+                    });
+                });
+                // Evento para eliminar producto desde el modal
+                lista.querySelectorAll('.btn-eliminar-producto').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const nombreProd = e.target.getAttribute('data-nombre');
+                        document.querySelectorAll('.producto-card').forEach(card => {
+                            if (card.querySelector('h4').textContent === nombreProd) {
+                                card.querySelector('.cantidad-cotizar').value = 0;
                             }
                         });
                         // Volver a mostrar el modal actualizado
@@ -356,26 +369,37 @@
             document.head.appendChild(script);
         }
 
-        // Hacer que el botón "Cotizar" aumente la cantidad del producto
+        // Solo un bloque para el botón "Cotizar": aumenta cantidad y muestra el efecto animado SOLO una vez
         document.querySelectorAll('.btn-comprar').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 const card = e.target.closest('.producto-card');
                 const cantidadInput = card.querySelector('.cantidad-cotizar');
                 cantidadInput.value = parseInt(cantidadInput.value, 10) + 1;
-                // Efecto visual breve
-                card.style.boxShadow = '0 0 0 3px #ff6600aa';
-                setTimeout(() => { card.style.boxShadow = ''; }, 400);
-            });
-        });
-
-        // Hacer que el botón "Cotizar" seleccione el producto
-        document.querySelectorAll('.btn-comprar').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const card = e.target.closest('.producto-card');
-                const check = card.querySelector('.check-cotizar');
-                check.checked = true;
-                // Efecto visual breve
-                card.style.boxShadow = '0 0 0 3px #ff6600aa';
+                // Efecto animado: producto "vuela" hacia el botón de cotización
+                const img = card.querySelector('img');
+                const btnCotizacion = document.getElementById('btn-ver-cotizacion');
+                const imgRect = img.getBoundingClientRect();
+                const btnRect = btnCotizacion.getBoundingClientRect();
+                const imgClone = img.cloneNode(true);
+                imgClone.style.position = 'fixed';
+                imgClone.style.left = imgRect.left + 'px';
+                imgClone.style.top = imgRect.top + 'px';
+                imgClone.style.width = imgRect.width + 'px';
+                imgClone.style.height = imgRect.height + 'px';
+                imgClone.style.zIndex = '9999';
+                imgClone.style.transition = 'all 0.9s cubic-bezier(.6,-0.28,.74,.05)';
+                imgClone.style.borderRadius = '50%';
+                document.body.appendChild(imgClone);
+                setTimeout(() => {
+                    imgClone.style.left = (btnRect.left + btnRect.width/2 - imgRect.width/4) + 'px';
+                    imgClone.style.top = (btnRect.top + btnRect.height/2 - imgRect.height/4) + 'px';
+                    imgClone.style.width = (imgRect.width/2) + 'px';
+                    imgClone.style.height = (imgRect.height/2) + 'px';
+                    imgClone.style.opacity = '0.2';
+                }, 50);
+                setTimeout(() => { imgClone.remove(); }, 950);
+                // Efecto de borde en la tarjeta
+                card.style.boxShadow = '0 0 0 4px #ff6600cc';
                 setTimeout(() => { card.style.boxShadow = ''; }, 400);
             });
         });
@@ -391,5 +415,3 @@
     </footer>
 </body>
 </html>
-
-
