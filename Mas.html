@@ -13,7 +13,7 @@
     <header class="header">
         <div class="container">
             <div class="logo-header">
-                <img src="logo ferreri.jpg" alt="Logo Ferreriwork" class="logo-img" />
+                <img src="images/logo ferreri.jpg" alt="Logo Ferreriwork" class="logo-img" />
                 <h1 class="logo">Ferreri-<span>work</span></h1>
             </div>
             <nav class="nav">
@@ -56,11 +56,11 @@
                         </div>
                         <div class="libro-row" style="display:flex; gap:1em; margin-bottom:1em;">
                             <input type="tel" name="telefono" placeholder="Teléfono" style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
-                            <input type="date" name="fecha_compra" placeholder="Fecha de compra" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                            <input type="date" name="fecha_compra" id="fecha_compra" placeholder="Fecha de compra (dd/mm/aaaa)" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
                         </div>
                         <div class="libro-row" style="display:flex; gap:1em; margin-bottom:1em;">
                             <input type="text" name="numero_pedido" placeholder="N° de pedido/transacción" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
-                            <input type="text" name="solucion" placeholder="¿Qué solución espera? (reembolso, cambio, reparación, etc.)" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
+                            <input type="text" name="solucion" placeholder="¿Qué solución espera?" required style="flex:1; padding:0.7em; border-radius:5px; border:1px solid #ccc;">
                         </div>
                         <textarea name="descripcion" placeholder="Descripción detallada del problema (ej: producto defectuoso, entrega tardía, publicidad engañosa)" required rows="3" style="width:100%; padding:0.7em; border-radius:5px; border:1px solid #ccc; margin-bottom:1em;"></textarea>
                         <label class="libro-label" style="margin-bottom:1em; display:block;">Adjuntar pruebas (imágenes, PDF, etc.):
@@ -70,7 +70,7 @@
                             <strong>Importante:</strong> Si vas a enviar tu reclamo por correo, debes <u>adjuntar manualmente</u> los archivos seleccionados (imágenes o PDF) antes de enviar el correo. El sistema no puede adjuntarlos automáticamente.
                         </div>
                         <div class="libro-row libro-fecha" style="margin:1em 0;">
-                            <span>Fecha y hora de registro: <span id="fecha-hora-registro"></span></span>
+                            <span>Fecha y hora de registro: <span id="fecha-hora-registro" style="background:#f7f7f7; border-radius:4px; padding:0.2em 0.7em; font-weight:bold; color:#444; user-select:none;"></span></span>
                         </div>
                         <div class="libro-row libro-btns" style="display:flex; gap:1em; justify-content:center; margin-top:1em;">
                             <button type="submit" class="libro-btn-enviar" style="background:#ff6600; color:#fff; border:none; border-radius:5px; padding:0.7em 1.5em; font-weight:bold; cursor:pointer;">Enviar reclamo</button>
@@ -84,48 +84,54 @@
                     <div style="background:#fff; border-radius:10px; max-width:95vw; width:600px; max-height:90vh; overflow-y:auto; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
                         <button class="cerrar-modal-mas" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
                         <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">TÉRMINOS Y CONDICIONES DE USO</h3>
-                        <div style="font-size:0.98em; color:#444; text-align:left;">
-                            <strong>Última actualización: 6/08/2025</strong><br><br>
-                            Bienvenido al sitio web de FERRERI-WORK S.A.C. Al acceder o utilizar nuestro sitio web, usted acepta los siguientes Términos y Condiciones. Si no está de acuerdo con estos términos, por favor no utilice este sitio.<br><br>
+                        <div style="font-size:1em; color:#444; text-align:left; max-width:98%; margin:auto;">
+                            <strong>Última actualización: 07/08/2025</strong><br><br>
+                            Bienvenido al sitio web de Ferreri-Work S.A.C.. Al navegar, registrarte o realizar compras en este portal, aceptas íntegramente estos Términos y Condiciones. Si no estás de acuerdo con alguno de los puntos aquí descritos, por favor no utilices este sitio.<br><br>
                             <strong>1. IDENTIFICACIÓN DE LA EMPRESA</strong><br>
-                            Razón Social: FERRERI-WORK S.A.C<br>
+                            Razón Social: Ferreri-Work S.A.C.<br>
                             RUC: 20544587111<br>
-                            Correo electrónico de contacto: Ferreri-work@hotmail.com<br>
-                            Teléfono: 934163957<br>
-                            Dirección fiscal: Jr. Saenz Peña Nro. 110 Int. 206 (Altura de la Cuadra 2 de Av. Iquitos)<br><br>
+                            Correo: ferreri-work@hotmail.com<br>
+                            Dirección fiscal: Jr. Saenz Peña N° 110 Int. 206, Lima – Perú<br>
+                            Teléfono: 934 163 957<br><br>
                             <strong>2. USO DEL SITIO WEB</strong><br>
-                            Al utilizar este sitio, el usuario se compromete a:<br>
-                            <ul style="margin-left:1em;">
-                                <li>Hacer un uso adecuado del contenido y servicios ofrecidos.</li>
-                                <li>No realizar actividades ilegales o que infrinjan derechos de terceros.</li>
-                                <li>No intentar acceder a áreas restringidas o vulnerar la seguridad del sitio.</li>
-                            </ul>
-                            <strong>3. PRODUCTOS Y PRECIOS</strong><br>
-                            Los productos ofrecidos son herramientas automotrices y afines. Las imágenes, descripciones y precios son referenciales y pueden estar sujetos a cambios sin previo aviso. FERRERI-WORK S.A.C se reserva el derecho de modificar productos o cancelar pedidos por errores en precios o disponibilidad.<br><br>
-                            <strong>4. PROCESO DE COMPRA</strong><br>
-                            El cliente debe proporcionar información veraz y completa. Al realizar un pedido, el cliente acepta las condiciones de venta y entrega. Una vez confirmado el pago, se procederá al despacho según las políticas vigentes de envío.<br><br>
+                            El usuario se compromete a utilizar este sitio de forma lícita, responsable y adecuada, sin realizar actividades fraudulentas ni vulnerar derechos de terceros. Ferreriwork se reserva el derecho de restringir el acceso a usuarios que incumplan estas condiciones.<br><br>
+                            <strong>3. PRODUCTOS, DISPONIBILIDAD Y PRECIOS</strong><br>
+                            Los productos ofrecidos son herramientas automotrices y accesorios. Las imágenes, descripciones y precios son referenciales y pueden variar sin previo aviso. Nos reservamos el derecho de cancelar pedidos por errores evidentes o falta de stock.<br><br>
+                            <strong>4. REGISTRO DEL USUARIO</strong><br>
+                            Para comprar en el sitio, el usuario debe registrarse con datos reales y aceptar expresamente estos términos. La información brindada será usada para fines operativos, promocionales y de atención. El no brindar esta autorización impedirá realizar compras.<br><br>
                             <strong>5. FORMAS DE PAGO</strong><br>
-                            Aceptamos los siguientes métodos de pago:<br>
-                            <ul style="margin-left:1em;">
-                                <li>Transferencias bancarias</li>
-                                <li>Yape / Plin</li>
-                                <li>Pago contra entrega (disponible en algunas zonas)</li>
-                            </ul>
-                            Las transacciones están sujetas a verificación de identidad y disponibilidad del producto.<br><br>
-                            <strong>6. ENVÍOS Y ENTREGAS</strong><br>
-                            Los plazos de entrega dependerán del destino y disponibilidad del producto. No nos responsabilizamos por retrasos ocasionados por terceros (couriers u operadores logísticos).<br><br>
-                            <strong>7. POLÍTICA DE CAMBIOS Y DEVOLUCIONES</strong><br>
-                            Se aceptan devoluciones por defectos de fábrica dentro de los primeros 7 días hábiles de recibida la compra, presentando comprobante de pago. El producto debe estar en su empaque original y sin señales de uso.<br><br>
-                            <strong>8. PROPIEDAD INTELECTUAL</strong><br>
-                            Todo el contenido de este sitio web (imágenes, textos, logos, diseño) es propiedad de FERRERI-WORK S.A.C y está protegido por leyes de propiedad intelectual. Su uso no autorizado está prohibido.<br><br>
-                            <strong>9. PROTECCIÓN DE DATOS</strong><br>
-                            Los datos personales recolectados serán tratados conforme a la Ley N.º 29733 - Ley de Protección de Datos Personales. No compartimos su información con terceros sin su consentimiento.<br><br>
-                            <strong>10. RESPONSABILIDAD LIMITADA</strong><br>
-                            No nos hacemos responsables por daños o perjuicios derivados del mal uso del sitio web o por interrupciones del servicio. Nos reservamos el derecho de modificar o suspender el sitio en cualquier momento sin previo aviso.<br><br>
-                            <strong>11. MODIFICACIONES A LOS TÉRMINOS</strong><br>
-                            Nos reservamos el derecho de actualizar estos términos en cualquier momento. Los cambios entrarán en vigor una vez publicados en esta página.<br><br>
-                            <strong>12. LEGISLACIÓN APLICABLE</strong><br>
-                            Estos Términos y Condiciones se rigen por las leyes de la República del Perú. Cualquier disputa será resuelta en los tribunales competentes del distrito judicial correspondiente a la sede de la empresa.<br>
+                            Aceptamos los siguientes medios:<br>
+                            Transferencia bancaria<br>
+                            Yape / Plin<br>
+                            Pago contra entrega (solo en zonas habilitadas)<br>
+                            Ferreriwork podrá solicitar comprobantes o rechazar transacciones por seguridad o sospecha de fraude.<br><br>
+                            <strong>6. VALIDACIÓN DE PEDIDOS</strong><br>
+                            Las compras solo serán válidas una vez confirmado el pago y validados los datos del cliente. Nos reservamos hasta 48 horas para este proceso. Si la validación no se completa, el pedido será anulado automáticamente.<br><br>
+                            <strong>7. ENVÍOS Y ENTREGAS</strong><br>
+                            Los plazos de entrega dependen de la ubicación y disponibilidad. No nos responsabilizamos por demoras causadas por terceros. El cliente debe indicar una dirección válida y estar disponible para recibir el pedido.<br><br>
+                            <strong>8. DESPACHO Y RECEPCIÓN</strong><br>
+                            Envíos a provincias se realizan a agencias locales según lo indicado por el cliente. Se presume que la persona que recibe el pedido en el lugar indicado está autorizada. Ferreriwork puede coordinar una nueva dirección si la zona es considerada peligrosa o inaccesible.<br><br>
+                            <strong>9. RETIRO EN TIENDA</strong><br>
+                            Si el cliente opta por esta modalidad, recibirá un correo de confirmación antes de acudir. El retiro debe realizarse con documento de identidad, solo por el titular de la compra. Se recomienda revisar el producto al momento del retiro.<br><br>
+                            <strong>10. CAMBIOS Y DEVOLUCIONES</strong><br>
+                            Aceptamos devoluciones por defectos de fábrica hasta 7 días hábiles después de la entrega. El producto debe estar sin uso, en su empaque original y con comprobante de pago. No se aceptan cambios por incompatibilidad con productos de otros proveedores.<br><br>
+                            <strong>11. CAMBIOS VOLUNTARIOS</strong><br>
+                            Si el cambio se debe a decisión del cliente, el producto debe estar nuevo, sin uso, con todos sus accesorios y embalaje original. El cambio puede realizarse por un producto de igual o mayor valor. Los costos logísticos son asumidos por el cliente.<br><br>
+                            <strong>12. GARANTÍA Y SERVICIO TÉCNICO</strong><br>
+                            La garantía cubre defectos de fábrica según las condiciones del proveedor o fabricante. No cubre daños por uso indebido, intervención no autorizada, golpes, humedad ni desgaste normal. El diagnóstico técnico tiene un plazo máximo de 15 días hábiles.<br><br>
+                            <strong>13. PROPIEDAD INTELECTUAL</strong><br>
+                            El contenido original de este sitio (textos, logos, diseño) es propiedad de Ferreri-Work S.A.C.<br>
+                            Las imágenes o íconos tomados de internet son utilizados con fines ilustrativos y pertenecen a sus respectivos autores. Si algún titular solicita su retiro, se eliminarán inmediatamente.<br><br>
+                            <strong>14. POLÍTICA DE PRIVACIDAD</strong><br>
+                            El uso de datos personales se rige por la Ley N.º 29733. Los usuarios pueden ejercer sus derechos de acceso, rectificación, cancelación u oposición escribiendo al correo institucional.<br><br>
+                            <strong>15. RESPONSABILIDAD LIMITADA</strong><br>
+                            Ferreriwork no se hace responsable por interrupciones del sitio, errores de contenido, ni daños derivados del uso incorrecto de este portal. Nos reservamos el derecho de suspender o modificar la web sin previo aviso.<br><br>
+                            <strong>16. MODIFICACIONES</strong><br>
+                            Estos términos pueden ser actualizados sin previo aviso. Se recomienda revisar esta página regularmente. El uso continuado del sitio implica la aceptación de los cambios.<br><br>
+                            <strong>17. CASO FORTUITO O FUERZA MAYOR</strong><br>
+                            Ferreriwork no será responsable por demoras o incumplimientos causados por eventos fuera de nuestro control (desastres naturales, conflictos sociales, huelgas, pandemias, etc.).<br><br>
+                            <strong>18. LEGISLACIÓN APLICABLE</strong><br>
+                            Este contrato se rige por las leyes de la República del Perú. Toda disputa será resuelta por los tribunales del distrito judicial correspondiente a la sede de Ferreriwork.<br>
                         </div>
                     </div>
                 </div>
@@ -133,53 +139,56 @@
                     <div style="background:#fff; border-radius:10px; max-width:95vw; width:600px; max-height:90vh; overflow-y:auto; padding:2em 1.5em; box-shadow:0 4px 24px #0003; position:relative;">
                         <button class="cerrar-modal-mas" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#ff6600; cursor:pointer;">&times;</button>
                         <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">POLÍTICA DE PRIVACIDAD</h3>
-                        <div style="font-size:0.98em; color:#444; text-align:left;">
-                            <strong>Última actualización: 6/08/2025</strong><br><br>
-                            En FERRERI-WORK S.A.C, nos comprometemos a proteger la privacidad de nuestros clientes y usuarios. Esta política explica cómo recolectamos, utilizamos y protegemos la información personal que nos proporcionas al visitar o realizar una compra en nuestro sitio web.<br><br>
-                            <strong>1. IDENTIDAD DEL RESPONSABLE</strong><br>
-                            Razón Social: FERRERI-WORK S.A.C<br>
+                        <div style="font-size:1em; color:#444; text-align:left; max-width:98%; margin:auto;">
+                            <strong>Última actualización: 7/08/2025</strong><br><br>
+                            En FERRERI-WORK S.A.C. estamos comprometidos con la protección de tus datos personales. Esta Política de Privacidad describe cómo recopilamos, utilizamos, almacenamos y protegemos tu información al utilizar nuestro sitio web o realizar una compra.<br><br>
+                            <strong>1. IDENTIDAD DEL RESPONSABLE DEL TRATAMIENTO</strong><br>
+                            Razón Social: FERRERI-WORK S.A.C.<br>
                             RUC: 20544587111<br>
-                            Correo electrónico de contacto: Ferreri-work@hotmail.com<br>
-                            Dirección fiscal: Jr. Saenz Peña Nro. 110 Int. 206 (Altura de la Cuadra 2 de Av. Iquitos)<br><br>
-                            <strong>2. DATOS QUE RECOPILAMOS</strong><br>
-                            Podemos recopilar los siguientes datos personales:<br>
-                            <ul style="margin-left:1em;">
-                                <li>Nombres y apellidos</li>
-                                <li>DNI o RUC</li>
-                                <li>Dirección de entrega</li>
-                                <li>Número de teléfono</li>
-                                <li>Correo electrónico</li>
-                                <li>Información de pago (no almacenamos datos de tarjetas de crédito/débito)</li>
-                            </ul>
-                            <strong>3. FINALIDAD DEL TRATAMIENTO DE DATOS</strong><br>
-                            Usamos tu información personal para:<br>
-                            <ul style="margin-left:1em;">
-                                <li>Procesar pedidos y entregas</li>
-                                <li>Emitir comprobantes de pago</li>
-                                <li>Gestionar consultas o reclamos</li>
-                                <li>Enviar información sobre nuestros productos y promociones (si das tu consentimiento)</li>
-                            </ul>
+                            Correo de contacto: ferreri-work@hotmail.com<br>
+                            Dirección: Jr. Saenz Peña Nro. 110 Int. 206 (Altura de la Cuadra 2 de Av. Iquitos), Lima - Perú<br><br>
+                            <strong>2. DATOS PERSONALES QUE RECOPILAMOS</strong><br>
+                            Recopilamos los siguientes datos personales que el usuario nos proporciona voluntariamente al registrarse, comprar o contactarnos:<br>
+                            Nombres y apellidos<br>
+                            Documento de identidad (DNI o RUC)<br>
+                            Dirección de entrega<br>
+                            Número de teléfono<br>
+                            Correo electrónico<br>
+                            Información de pago (no almacenamos datos sensibles como números de tarjeta)<br><br>
+                            <strong>3. FINALIDAD Y BASE LEGAL DEL TRATAMIENTO</strong><br>
+                            Tratamos tu información personal con las siguientes finalidades legítimas:<br>
+                            Procesar pedidos, pagos y entregas. (Ejecución de contrato)<br>
+                            Emitir comprobantes de pago. (Obligación legal)<br>
+                            Atender consultas, reclamos o devoluciones. (Interés legítimo)<br>
+                            Enviar promociones, noticias o beneficios. (Previo consentimiento expreso)<br>
+                            Cumplir con nuestras obligaciones legales o contractuales. (Obligación legal)<br><br>
                             <strong>4. CONSERVACIÓN DE LOS DATOS</strong><br>
-                            Tus datos serán almacenados únicamente durante el tiempo necesario para cumplir con las finalidades mencionadas, o según lo establecido por la normativa tributaria y comercial vigente.<br><br>
+                            Tus datos se conservarán solo durante el tiempo necesario para cumplir con las finalidades mencionadas o el tiempo que exijan las disposiciones legales y tributarias vigentes.<br><br>
                             <strong>5. SEGURIDAD DE LA INFORMACIÓN</strong><br>
-                            Adoptamos medidas técnicas y organizativas adecuadas para proteger tus datos personales contra pérdida, mal uso, acceso no autorizado o divulgación.<br><br>
-                            <strong>6. COMPARTICIÓN DE DATOS</strong><br>
-                            No vendemos, alquilamos ni compartimos tu información personal con terceros, salvo cuando sea necesario para cumplir con obligaciones legales o para procesar servicios contratados (por ejemplo, servicios de envío).<br><br>
+                            Implementamos medidas técnicas, organizativas y administrativas razonables para garantizar la seguridad de tus datos personales y evitar accesos no autorizados, pérdidas o alteraciones.<br><br>
+                            <strong>6. COMPARTICIÓN Y TRANSFERENCIA DE DATOS</strong><br>
+                            No vendemos ni alquilamos tu información. Solo compartimos tus datos con:<br>
+                            Empresas de logística y servicios de entrega<br>
+                            Plataformas de pago seguras<br>
+                            Proveedores tecnológicos con quienes mantenemos acuerdos de confidencialidad<br>
+                            Autoridades competentes, cuando sea requerido por ley<br>
+                            En caso se utilicen servicios alojados fuera del Perú, tus datos podrían ser transferidos internacionalmente, garantizando su protección según la Ley N.º 29733.<br><br>
                             <strong>7. DERECHOS DEL TITULAR DE LOS DATOS</strong><br>
-                            De acuerdo con la Ley N.º 29733, tienes los siguientes derechos:<br>
-                            <ul style="margin-left:1em;">
-                                <li>Acceso a tus datos personales.</li>
-                                <li>Rectificación de datos incorrectos o desactualizados.</li>
-                                <li>Cancelación de tus datos cuando ya no se requieran.</li>
-                                <li>Oposición al tratamiento por motivos legítimos.</li>
-                            </ul>
-                            Puedes ejercer estos derechos enviando una solicitud a nuestro correo: Ferreri-work@hotmail.com<br><br>
-                            <strong>8. USO DE COOKIES</strong><br>
-                            Este sitio web puede utilizar cookies para mejorar la experiencia del usuario. Puedes configurar tu navegador para rechazarlas, aunque esto podría afectar la funcionalidad del sitio.<br><br>
-                            <strong>9. CAMBIOS EN LA POLÍTICA DE PRIVACIDAD</strong><br>
-                            Nos reservamos el derecho de actualizar esta política en cualquier momento. Te notificaremos de cualquier cambio publicando la nueva versión en esta página.<br><br>
-                            <strong>10. ACEPTACIÓN DE LA POLÍTICA</strong><br>
-                            El uso del sitio web implica la aceptación de esta Política de Privacidad. Si no estás de acuerdo, por favor no utilices nuestros servicios.<br>
+                            De acuerdo con la Ley de Protección de Datos Personales, puedes ejercer los derechos de:<br>
+                            Acceso: Saber qué datos tuyos tenemos.<br>
+                            Rectificación: Corregir datos incorrectos.<br>
+                            Cancelación: Eliminar tus datos cuando ya no se requieran.<br>
+                            Oposición: Oponerte al tratamiento por motivos legítimos.<br>
+                            Para ejercer estos derechos, envíanos tu solicitud al correo: ferreri-work@hotmail.com.<br>
+                            Tiempo de respuesta: máximo 10 días hábiles.<br><br>
+                            <strong>8. USO DE COOKIES Y TECNOLOGÍAS SIMILARES</strong><br>
+                            Utilizamos cookies propias y de terceros para mejorar tu experiencia en el sitio web, analizar estadísticas de navegación y ofrecer contenido personalizado. Puedes configurar tu navegador para bloquear o eliminar las cookies, aunque esto podría afectar ciertas funcionalidades.<br><br>
+                            <strong>9. MENORES DE EDAD</strong><br>
+                            Nuestros servicios no están dirigidos a menores de 18 años. No recopilamos intencionalmente información de menores sin consentimiento de sus padres o tutores legales.<br><br>
+                            <strong>10. CAMBIOS EN LA POLÍTICA DE PRIVACIDAD</strong><br>
+                            Nos reservamos el derecho de actualizar esta política en cualquier momento. Publicaremos la nueva versión en esta página y, si los cambios son significativos, te lo notificaremos por los medios disponibles.<br><br>
+                            <strong>11. ACEPTACIÓN</strong><br>
+                            El uso de nuestro sitio web implica la aceptación plena de esta Política de Privacidad. Si no estás de acuerdo, por favor no utilices nuestros servicios ni compartas tu información personal.<br>
                         </div>
                     </div>
                 </div>
@@ -189,7 +198,7 @@
                         <h3 style="color:#ff6600; text-align:center; margin-bottom:1em;">Ubicación</h3>
                         <div style="text-align:center;">
                             <p style="font-size:1.08em; color:#444; margin-bottom:1em;">Nuestra tienda se encuentra en Jr. Saéns peña 110.</p>
-                            <img src="images/logo ferreri.jpg" alt="Foto de la tienda Ferreriwork" style="width:75%; max-width:450px; height:auto; border-radius:10px; box-shadow:0 2px 12px #8883; margin-bottom:1em; object-fit:contain;">
+                            <img src="logo ferreri.jpg" alt="Foto de la tienda Ferreriwork" style="width:75%; max-width:450px; height:auto; border-radius:10px; box-shadow:0 2px 12px #8883; margin-bottom:1em; object-fit:contain;">
                             <a href="https://maps.app.goo.gl/dCCL48LpXKezV6zL8" target="_blank" style="display:inline-block; text-decoration:none;">
                                 <div style="margin-top:0.5em;">
                                     <span style="color:#ff6600; font-weight:bold; font-size:1.08em;">Ver en Google Maps</span>
@@ -234,7 +243,15 @@
             const ahora = new Date();
             const fecha = ahora.toLocaleDateString('es-PE');
             const hora = ahora.toLocaleTimeString('es-PE');
-            document.getElementById('fecha-hora-registro').textContent = fecha + ' ' + hora;
+            const fechaElem = document.getElementById('fecha-hora-registro');
+            fechaElem.textContent = fecha + ' ' + hora;
+            // Evitar edición por teclado, portapapeles y menú contextual
+            fechaElem.setAttribute('tabindex', '-1');
+            fechaElem.setAttribute('aria-readonly', 'true');
+            fechaElem.addEventListener('keydown', e => e.preventDefault());
+            fechaElem.addEventListener('paste', e => e.preventDefault());
+            fechaElem.addEventListener('cut', e => e.preventDefault());
+            fechaElem.addEventListener('contextmenu', e => e.preventDefault());
         }
         mostrarFechaHora();
 
@@ -357,5 +374,3 @@
     </footer>
 </body>
 </html>
-
-
