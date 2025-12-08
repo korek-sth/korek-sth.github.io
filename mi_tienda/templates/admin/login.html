@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-container h2 {
+  color: #ff8c42;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.login-form label {
+  display: block;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+}
+
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  background: #ff8c42;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-form button:hover {
+  background: #ff7a1a;
+}
+
+.error-message {
+  color: #ef4444;
+  background: #fee;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #ef4444;
+}
+
+.login-info {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e6e9ef;
+  color: #6b7280;
+  font-size: 12px;
+}
+</style>
+
+<div class="login-container">
+  <h2>🔐 Acceso Administrador</h2>
+
+  {% if error %}
+    <div class="error-message">
+      <strong>Error:</strong> {{ error }}
+    </div>
+  {% endif %}
+
+  <form method="post" action="{{ url_for('admin_login') }}" class="login-form">
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required placeholder="Ingresa la contraseña">
+    <button type="submit">Entrar</button>
+  </form>
+
+  <div class="login-info">
+    <p>💡 Área administrativa restringida</p>
+  </div>
+</div>
+{% endblock %}

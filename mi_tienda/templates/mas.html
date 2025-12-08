@@ -1,0 +1,666 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.mas-header {
+  background: linear-gradient(135deg, #ff8c42 0%, #ff9f5a 100%);
+  color: white;
+  padding: 40px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.mas-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 36px;
+}
+
+.mas-header p {
+  margin: 0;
+  opacity: 0.95;
+  font-size: 16px;
+}
+
+.seccion {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+}
+
+.seccion h2 {
+  color: #ff8c42;
+  font-size: 24px;
+  margin-top: 0;
+  border-bottom: 2px solid #ff8c42;
+  padding-bottom: 12px;
+}
+
+.seccion h3 {
+  color: #6b7280;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.seccion p {
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.caracteristicas-list {
+  list-style: none;
+  padding: 0;
+}
+
+.caracteristicas-list li {
+  padding: 10px 0;
+  color: #444;
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.caracteristicas-list li:last-child {
+  border-bottom: none;
+}
+
+.caracteristicas-list li:before {
+  content: "✓ ";
+  color: #ff8c42;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.contacto-item {
+  background: #f9f5f0;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 4px solid #ff8c42;
+}
+
+.contacto-item-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.contacto-item-titulo {
+  color: #ff8c42;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.contacto-item-valor {
+  color: #444;
+}
+
+.faq-item {
+  background: #f9f5f0;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.faq-item:hover {
+  background: #f0e8e0;
+}
+
+.faq-pregunta {
+  color: #ff8c42;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-respuesta {
+  color: #444;
+  margin-top: 12px;
+  display: none;
+  line-height: 1.6;
+}
+
+.faq-respuesta.mostrar {
+  display: block;
+}
+
+.faq-icon {
+  transition: transform 0.2s;
+}
+
+.faq-icon.girado {
+  transform: rotate(180deg);
+}
+
+.documentos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.btn-documento {
+  background: linear-gradient(135deg, #ff8c42 0%, #ff9f5a 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.15);
+}
+
+.btn-documento:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(255, 140, 66, 0.25);
+}
+
+.btn-documento-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.btn-documento-titulo {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.btn-documento-desc {
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.mostrar {
+  display: flex;
+}
+
+.modal-contenido {
+  background: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #ff8c42 0%, #ff9f5a 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px 10px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.modal-close:hover {
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body h3 {
+  color: #ff8c42;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.modal-body p {
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.btn-enviar {
+  background: #ff8c42;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.btn-enviar:hover {
+  background: #ff7a1a;
+}
+
+@media (max-width: 700px) {
+  .contacto-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .mas-header h1 {
+    font-size: 24px;
+  }
+  
+  .documentos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-contenido {
+    width: 95%;
+    max-height: 90vh;
+  }
+}
+</style>
+
+<div class="mas-header">
+  <h1>📋 Más Información</h1>
+  <p>Conoce todo sobre Ferreri-Work y nuestros servicios</p>
+</div>
+
+<!-- Sobre Nosotros -->
+<div class="seccion">
+  <h2>🏢 Sobre Nosotros</h2>
+  <p>
+    <strong>Ferreri-Work</strong> es una empresa dedicada a la distribución de herramientas y repuestos de alta calidad para el sector automotor. 
+    Contamos con más de 10 años de experiencia en el mercado, ofreciendo soluciones confiables a mecánicos, talleres y profesionales del ramo.
+  </p>
+  <h3>Nuestra Misión</h3>
+  <p>
+    Proporcionar herramientas de calidad premium a precios competitivos, facilitando el trabajo de nuestros clientes 
+    en el sector automotor con variedad, confiabilidad y excelente atención.
+  </p>
+  <h3>Nuestros Valores</h3>
+  <ul class="caracteristicas-list">
+    <li>Calidad sin compromiso en todos nuestros productos</li>
+    <li>Precios justos y competitivos en el mercado</li>
+    <li>Atención al cliente personalizada y responsable</li>
+    <li>Variedad completa de herramientas y repuestos</li>
+    <li>Entrega rápida y confiable</li>
+  </ul>
+</div>
+
+<!-- Contacto -->
+<div class="seccion">
+  <h2>📞 Contacto</h2>
+  <p>¿Tienes preguntas? Estamos aquí para ayudarte. Contáctanos por cualquiera de estos medios:</p>
+  
+  <div class="contacto-grid">
+    <div class="contacto-item">
+      <div class="contacto-item-icon">📱</div>
+      <div class="contacto-item-titulo">Teléfono</div>
+      <div class="contacto-item-valor">+51 934 163 957</div>
+    </div>
+    <div class="contacto-item">
+      <div class="contacto-item-icon">📧</div>
+      <div class="contacto-item-titulo">Email</div>
+      <div class="contacto-item-valor">Ferreri-work@hotmail.com</div>
+    </div>
+    <div class="contacto-item">
+      <div class="contacto-item-icon">📍</div>
+      <div class="contacto-item-titulo">Ubicación</div>
+      <a href="https://maps.app.goo.gl/ESuVUjNBkGiccMqf7" target="_blank" style="color:#ff6600; text-decoration:underline;">Jron. Saéns Peña 110</a>
+    </div>
+    <div class="contacto-item">
+      <div class="contacto-item-icon">🕐</div>
+      <div class="contacto-item-titulo">Horario</div>
+      <div class="contacto-item-valor">L-V: 10am - 6pm</div>
+    </div>
+  </div>
+</div>
+
+<!-- Preguntas Frecuentes -->
+<div class="seccion">
+  <h2>❓ Preguntas Frecuentes</h2>
+  
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-pregunta">
+      ¿Cuáles son los métodos de pago aceptados?
+      <span class="faq-icon">▼</span>
+    </div>
+    <div class="faq-respuesta">
+      Aceptamos transferencia bancaria, depósito en cuenta, efectivo y yape/plin. 
+      Consulta con nuestro equipo de ventas para conocer todas las opciones disponibles.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-pregunta">
+      ¿Cuál es el tiempo de entrega?
+      <span class="faq-icon">▼</span>
+    </div>
+    <div class="faq-respuesta">
+      El tiempo de entrega depende de tu ubicación. En Lima ofrecemos entrega en 24-48 horas. 
+      Para provincias, el plazo varía de 3-7 días hábiles según la distancia.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-pregunta">
+      ¿Ofrecen garantía en los productos?
+      <span class="faq-icon">▼</span>
+    </div>
+    <div class="faq-respuesta">
+      Todos nuestros productos cuentan con garantía del fabricante. Los detalles de cada garantía 
+      se especifican en el producto. Contacta con nuestro equipo para más información.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-pregunta">
+      ¿Hacen descuentos por compras al por mayor?
+      <span class="faq-icon">▼</span>
+    </div>
+    <div class="faq-respuesta">
+      Sí, ofrecemos descuentos especiales para compras al por mayor. Comunícate con nuestro equipo 
+      de ventas para negociar los mejores precios para tu negocio.
+    </div>
+  </div>
+
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-pregunta">
+      ¿Puedo devolver un producto si no me satisface?
+      <span class="faq-icon">▼</span>
+    </div>
+    <div class="faq-respuesta">
+      Sí, contamos con una política de devolución dentro de 7 días después de la compra, 
+      siempre que el producto esté en perfectas condiciones. Aplican términos y condiciones.
+    </div>
+  </div>
+</div>
+
+<!-- Documentos Legales -->
+<div class="seccion">
+  <h2>📄 Documentos Legales</h2>
+  <p>Accede a nuestros documentos legales importantes:</p>
+  
+  <div class="documentos-grid">
+    <button onclick="abrirModal('libro-reclamaciones')" class="btn-documento">
+      <div class="btn-documento-icon">📋</div>
+      <div class="btn-documento-titulo">Libro de Reclamaciones</div>
+      <div class="btn-documento-desc">Presenta tu reclamo o sugerencia</div>
+    </button>
+    
+    <button onclick="abrirModal('terminos-condiciones')" class="btn-documento">
+      <div class="btn-documento-icon">⚖️</div>
+      <div class="btn-documento-titulo">Términos y Condiciones</div>
+      <div class="btn-documento-desc">Condiciones de uso de la plataforma</div>
+    </button>
+    
+    <button onclick="abrirModal('aviso-privacidad')" class="btn-documento">
+      <div class="btn-documento-icon">🔒</div>
+      <div class="btn-documento-titulo">Aviso de Privacidad</div>
+      <div class="btn-documento-desc">Protección de tus datos personales</div>
+    </button>
+  </div>
+</div>
+
+<!-- Modales -->
+<div id="modal-libro-reclamaciones" class="modal" onclick="cerrarModal(event)">
+  <div class="modal-contenido" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2>📋 Libro de Reclamaciones</h2>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="formulario-reclamacion">
+        <div class="form-group">
+          <label>Nombre Completo *</label>
+          <input type="text" required placeholder="Tu nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" placeholder="+51 999 999 999">
+        </div>
+        <div class="form-group">
+          <label>Tipo de Reclamo *</label>
+          <select required>
+            <option value="">Selecciona un tipo...</option>
+            <option value="producto">Calidad del Producto</option>
+            <option value="entrega">Problema con Entrega</option>
+            <option value="servicio">Servicio al Cliente</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Descripción del Reclamo *</label>
+          <textarea required placeholder="Describe tu reclamo en detalle..."></textarea>
+        </div>
+        <button type="submit" class="btn-enviar">Enviar Reclamo</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="modal-terminos-condiciones" class="modal" onclick="cerrarModal(event)">
+  <div class="modal-contenido" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2>⚖️ Términos y Condiciones</h2>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <strong>Última actualización: 07/08/2025</strong><br><br>
+                            Bienvenido al sitio web de Ferreri-Work S.A.C.. Al navegar, registrarte o realizar compras en este portal, aceptas íntegramente estos Términos y Condiciones. Si no estás de acuerdo con alguno de los puntos aquí descritos, por favor no utilices este sitio.<br><br>
+                            <strong>1. IDENTIFICACIÓN DE LA EMPRESA</strong><br>
+                            Razón Social: Ferreri-Work S.A.C.<br>
+                            RUC: 20544587111<br>
+                            Correo: ferreri-work@hotmail.com<br>
+                            Dirección fiscal: Jr. Saenz Peña N° 110 Int. 206, Lima – Perú<br>
+                            Teléfono: 934 163 957<br><br>
+                            <strong>2. USO DEL SITIO WEB</strong><br>
+                            El usuario se compromete a utilizar este sitio de forma lícita, responsable y adecuada, sin realizar actividades fraudulentas ni vulnerar derechos de terceros. Ferreriwork se reserva el derecho de restringir el acceso a usuarios que incumplan estas condiciones.<br><br>
+                            <strong>3. PRODUCTOS, DISPONIBILIDAD Y PRECIOS</strong><br>
+                            Los productos ofrecidos son herramientas automotrices y accesorios. Las imágenes, descripciones y precios son referenciales y pueden variar sin previo aviso. Nos reservamos el derecho de cancelar pedidos por errores evidentes o falta de stock.<br><br>
+                            <strong>4. REGISTRO DEL USUARIO</strong><br>
+                            Para comprar en el sitio, el usuario debe registrarse con datos reales y aceptar expresamente estos términos. La información brindada será usada para fines operativos, promocionales y de atención. El no brindar esta autorización impedirá realizar compras.<br><br>
+                            <strong>5. FORMAS DE PAGO</strong><br>
+                            Aceptamos los siguientes medios:<br>
+                            Transferencia bancaria<br>
+                            Yape / Plin<br>
+                            Pago contra entrega (solo en zonas habilitadas)<br>
+                            Ferreriwork podrá solicitar comprobantes o rechazar transacciones por seguridad o sospecha de fraude.<br><br>
+                            <strong>6. VALIDACIÓN DE PEDIDOS</strong><br>
+                            Las compras solo serán válidas una vez confirmado el pago y validados los datos del cliente. Nos reservamos hasta 48 horas para este proceso. Si la validación no se completa, el pedido será anulado automáticamente.<br><br>
+                            <strong>7. ENVÍOS Y ENTREGAS</strong><br>
+                            Los plazos de entrega dependen de la ubicación y disponibilidad. No nos responsabilizamos por demoras causadas por terceros. El cliente debe indicar una dirección válida y estar disponible para recibir el pedido.<br><br>
+                            <strong>8. DESPACHO Y RECEPCIÓN</strong><br>
+                            Envíos a provincias se realizan a agencias locales según lo indicado por el cliente. Se presume que la persona que recibe el pedido en el lugar indicado está autorizada. Ferreriwork puede coordinar una nueva dirección si la zona es considerada peligrosa o inaccesible.<br><br>
+                            <strong>9. RETIRO EN TIENDA</strong><br>
+                            Si el cliente opta por esta modalidad, recibirá un correo de confirmación antes de acudir. El retiro debe realizarse con documento de identidad, solo por el titular de la compra. Se recomienda revisar el producto al momento del retiro.<br><br>
+                            <strong>10. CAMBIOS Y DEVOLUCIONES</strong><br>
+                            Aceptamos devoluciones por defectos de fábrica hasta 7 días hábiles después de la entrega. El producto debe estar sin uso, en su empaque original y con comprobante de pago. No se aceptan cambios por incompatibilidad con productos de otros proveedores.<br><br>
+                            <strong>11. CAMBIOS VOLUNTARIOS</strong><br>
+                            Si el cambio se debe a decisión del cliente, el producto debe estar nuevo, sin uso, con todos sus accesorios y embalaje original. El cambio puede realizarse por un producto de igual o mayor valor. Los costos logísticos son asumidos por el cliente.<br><br>
+                            <strong>12. GARANTÍA Y SERVICIO TÉCNICO</strong><br>
+                            La garantía cubre defectos de fábrica según las condiciones del proveedor o fabricante. No cubre daños por uso indebido, intervención no autorizada, golpes, humedad ni desgaste normal. El diagnóstico técnico tiene un plazo máximo de 15 días hábiles.<br><br>
+                            <strong>13. PROPIEDAD INTELECTUAL</strong><br>
+                            El contenido original de este sitio (textos, logos, diseño) es propiedad de Ferreri-Work S.A.C.<br>
+                            Las imágenes o íconos tomados de internet son utilizados con fines ilustrativos y pertenecen a sus respectivos autores. Si algún titular solicita su retiro, se eliminarán inmediatamente.<br><br>
+                            <strong>14. POLÍTICA DE PRIVACIDAD</strong><br>
+                            El uso de datos personales se rige por la Ley N.º 29733. Los usuarios pueden ejercer sus derechos de acceso, rectificación, cancelación u oposición escribiendo al correo institucional.<br><br>
+                            <strong>15. RESPONSABILIDAD LIMITADA</strong><br>
+                            Ferreriwork no se hace responsable por interrupciones del sitio, errores de contenido, ni daños derivados del uso incorrecto de este portal. Nos reservamos el derecho de suspender o modificar la web sin previo aviso.<br><br>
+                            <strong>16. MODIFICACIONES</strong><br>
+                            Estos términos pueden ser actualizados sin previo aviso. Se recomienda revisar esta página regularmente. El uso continuado del sitio implica la aceptación de los cambios.<br><br>
+                            <strong>17. CASO FORTUITO O FUERZA MAYOR</strong><br>
+                            Ferreriwork no será responsable por demoras o incumplimientos causados por eventos fuera de nuestro control (desastres naturales, conflictos sociales, huelgas, pandemias, etc.).<br><br>
+                            <strong>18. LEGISLACIÓN APLICABLE</strong><br>
+                            Este contrato se rige por las leyes de la República del Perú. Toda disputa será resuelta por los tribunales del distrito judicial correspondiente a la sede de Ferreriwork.<br>
+    </div>
+  </div>
+</div>
+
+<div id="modal-aviso-privacidad" class="modal" onclick="cerrarModal(event)">
+  <div class="modal-contenido" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2>🔒 Aviso de Privacidad</h2>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <strong>Última actualización: 7/08/2025</strong><br><br>
+                            En FERRERI-WORK S.A.C. estamos comprometidos con la protección de tus datos personales. Esta Política de Privacidad describe cómo recopilamos, utilizamos, almacenamos y protegemos tu información al utilizar nuestro sitio web o realizar una compra.<br><br>
+                            <strong>1. IDENTIDAD DEL RESPONSABLE DEL TRATAMIENTO</strong><br>
+                            Razón Social: FERRERI-WORK S.A.C.<br>
+                            RUC: 20544587111<br>
+                            Correo de contacto: ferreri-work@hotmail.com<br>
+                            Dirección: Jr. Saenz Peña Nro. 110 Int. 206 (Altura de la Cuadra 2 de Av. Iquitos), Lima - Perú<br><br>
+                            <strong>2. DATOS PERSONALES QUE RECOPILAMOS</strong><br>
+                            Recopilamos los siguientes datos personales que el usuario nos proporciona voluntariamente al registrarse, comprar o contactarnos:<br>
+                            Nombres y apellidos<br>
+                            Documento de identidad (DNI o RUC)<br>
+                            Dirección de entrega<br>
+                            Número de teléfono<br>
+                            Correo electrónico<br>
+                            Información de pago (no almacenamos datos sensibles como números de tarjeta)<br><br>
+                            <strong>3. FINALIDAD Y BASE LEGAL DEL TRATAMIENTO</strong><br>
+                            Tratamos tu información personal con las siguientes finalidades legítimas:<br>
+                            Procesar pedidos, pagos y entregas. (Ejecución de contrato)<br>
+                            Emitir comprobantes de pago. (Obligación legal)<br>
+                            Atender consultas, reclamos o devoluciones. (Interés legítimo)<br>
+                            Enviar promociones, noticias o beneficios. (Previo consentimiento expreso)<br>
+                            Cumplir con nuestras obligaciones legales o contractuales. (Obligación legal)<br><br>
+                            <strong>4. CONSERVACIÓN DE LOS DATOS</strong><br>
+                            Tus datos se conservarán solo durante el tiempo necesario para cumplir con las finalidades mencionadas o el tiempo que exijan las disposiciones legales y tributarias vigentes.<br><br>
+                            <strong>5. SEGURIDAD DE LA INFORMACIÓN</strong><br>
+                            Implementamos medidas técnicas, organizativas y administrativas razonables para garantizar la seguridad de tus datos personales y evitar accesos no autorizados, pérdidas o alteraciones.<br><br>
+                            <strong>6. COMPARTICIÓN Y TRANSFERENCIA DE DATOS</strong><br>
+                            No vendemos ni alquilamos tu información. Solo compartimos tus datos con:<br>
+                            Empresas de logística y servicios de entrega<br>
+                            Plataformas de pago seguras<br>
+                            Proveedores tecnológicos con quienes mantenemos acuerdos de confidencialidad<br>
+                            Autoridades competentes, cuando sea requerido por ley<br>
+                            En caso se utilicen servicios alojados fuera del Perú, tus datos podrían ser transferidos internacionalmente, garantizando su protección según la Ley N.º 29733.<br><br>
+                            <strong>7. DERECHOS DEL TITULAR DE LOS DATOS</strong><br>
+                            De acuerdo con la Ley de Protección de Datos Personales, puedes ejercer los derechos de:<br>
+                            Acceso: Saber qué datos tuyos tenemos.<br>
+                            Rectificación: Corregir datos incorrectos.<br>
+                            Cancelación: Eliminar tus datos cuando ya no se requieran.<br>
+                            Oposición: Oponerte al tratamiento por motivos legítimos.<br>
+                            Para ejercer estos derechos, envíanos tu solicitud al correo: ferreri-work@hotmail.com.<br>
+                            Tiempo de respuesta: máximo 10 días hábiles.<br><br>
+                            <strong>8. USO DE COOKIES Y TECNOLOGÍAS SIMILARES</strong><br>
+                            Utilizamos cookies propias y de terceros para mejorar tu experiencia en el sitio web, analizar estadísticas de navegación y ofrecer contenido personalizado. Puedes configurar tu navegador para bloquear o eliminar las cookies, aunque esto podría afectar ciertas funcionalidades.<br><br>
+                            <strong>9. MENORES DE EDAD</strong><br>
+                            Nuestros servicios no están dirigidos a menores de 18 años. No recopilamos intencionalmente información de menores sin consentimiento de sus padres o tutores legales.<br><br>
+                            <strong>10. CAMBIOS EN LA POLÍTICA DE PRIVACIDAD</strong><br>
+                            Nos reservamos el derecho de actualizar esta política en cualquier momento. Publicaremos la nueva versión en esta página y, si los cambios son significativos, te lo notificaremos por los medios disponibles.<br><br>
+                            <strong>11. ACEPTACIÓN</strong><br>
+                            El uso de nuestro sitio web implica la aceptación plena de esta Política de Privacidad. Si no estás de acuerdo, por favor no utilices nuestros servicios ni compartas tu información personal.<br>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleFaq(elemento) {
+  const respuesta = elemento.querySelector('.faq-respuesta');
+  const icon = elemento.querySelector('.faq-icon');
+  
+  respuesta.classList.toggle('mostrar');
+  icon.classList.toggle('girado');
+}
+
+function abrirModal(tipo) {
+  const modalId = `modal-${tipo}`;
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('mostrar');
+  }
+}
+
+function cerrarModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  
+  const modales = document.querySelectorAll('.modal.mostrar');
+  modales.forEach(modal => modal.classList.remove('mostrar'));
+}
+
+// Cerrar modal al presionar Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') cerrarModal();
+});
+
+// Manejar envío del formulario de reclamación
+document.getElementById('formulario-reclamacion')?.addEventListener('submit', e => {
+  e.preventDefault();
+  alert('Tu reclamo ha sido registrado. Nos pondremos en contacto pronto.');
+  cerrarModal();
+  document.getElementById('formulario-reclamacion').reset();
+});
+</script>
+{% endblock %}

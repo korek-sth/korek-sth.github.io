@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.detalle { margin-top: 30px; }
+.detalle img { max-width: 400px; border-radius: 8px; }
+.detalle h2 { color: #ff8c42; margin: 20px 0 10px 0; }
+.detalle h3 { color: #ff8c42; font-size: 24px; margin: 15px 0; }
+.detalle button { background: #ff8c42; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.detalle button:hover { background: #ff7a1a; }
+</style>
+
+{% if producto %}
+<div class="detalle">
+<img src="{{ producto.imagen }}" alt="{{ producto.nombre }}">
+<div>
+<h2>{{ producto.nombre }}</h2>
+{% if producto.get('marca') %}<p style="color: #6b7280; font-weight: 600;">Marca: {{ producto.marca }}</p>{% endif %}
+<p>{{ producto.descripcion }}</p>
+<h3>S/ {{ "%.2f"|format(producto.precio) }}</h3>
+<label for="cantidad">Cantidad:</label>
+<input type="number" id="cantidad" name="cantidad" min="1" value="1">
+<button type="button" onclick="agregarCarrito({{ producto.id }}, document.getElementById('cantidad').value)">Agregar a la cotizacion</button>
+</div>
+</div>
+{% else %}
+<p>Producto no encontrado</p>
+{% endif %}
+{% endblock %}
+
+<!-- Agrega el mismo script robusto si no está en base.html o productos.html -->
+<script>
+/* Misma implementación que en productos.html para asegurar compatibilidad */
+function actualizarContadorCarrito() {
+    try {
+        const raw = localStorage.getItem('mi_tienda_cart') || '[]';
+        const cart = JSON.parse(raw);
+        const count = Array.isArray(cart) ? cart.reduce((s, i) => s + (Number(i.qty) || 0), 0) : 0;
+        const badge = document.getElementById('cart-count');
+        if (badge) badge.textContent = count;
+    } catch (e) {
+        console.error('Error al leer carrito:', e);
+    }
+}
+
+function agregarCarrito(productId, cantidad) {
+    try {
+        productId = Number(productId);
+        cantidad = Number(cantidad) || 1;
+        console.log('agregarCarrito (detalle):', productId, cantidad);
+
+        const key = 'mi_tienda_cart';
+        let cart = [];
+        try {
+            const raw = localStorage.getItem(key);
+            cart = raw ? JSON.parse(raw) : [];
+            if (!Array.isArray(cart)) cart = [];
+        } catch (e) {
+            cart = [];
+        }
+
+        const idx = cart.findIndex(i => Number(i.id) === productId);
+        if (idx >= 0) {
+            cart[idx].qty = (Number(cart[idx].qty) || 0) + cantidad;
+        } else {
+            cart.push({ id: productId, qty: cantidad });
+        }
+
+        localStorage.setItem(key, JSON.stringify(cart));
+        actualizarContadorCarrito();
+
+        const msg = document.createElement('div');
+        msg.textContent = 'Producto añadido al carrito';
+        Object.assign(msg.style, {
+            position: 'fixed',
+            right: '20px',
+            top: '20px',
+            background: '#27ae60',
+            color: '#fff',
+            padding: '10px 14px',
+            borderRadius: '6px',
+            zIndex: 9999,
+            boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+        });
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 1600);
+    } catch (e) {
+        console.error('Error al agregar al carrito (detalle):', e);
+        alert('No se pudo agregar el producto al carrito.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', actualizarContadorCarrito);
+</script>

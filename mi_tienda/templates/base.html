@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ferreri-Work</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="/static/js/main.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+	<div class="container header-inner">
+		<div class="brand">
+			<a href="/"><span style="color:#ff8c42;font-size:18px;"><img src="/static/img/logo ferreri.jpg" alt="Ferreri-Work Logo" class="logo"></span> <span>FERRERI-WORK</span></a>
+		</div>
+		<nav class="main-nav">
+			<a href="/">Inicio</a>
+			<a href="/productos">Productos</a>
+			<a href="/cotizacion" class="cart-link">Cotización <span id="cart-count" class="cart-count">0</span></a>
+			<a href="/mas">Más</a>
+			<a href="/admin">Admin</a>
+			{% if session.get('admin_auth') %}
+				<a href="{{ url_for('admin_logout') }}" class="logout" style="color:#ff8c42;">Cerrar sesión</a>
+			{% endif %}
+		</nav>
+	</div>
+</header>
+
+<main class="container main-content">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+	<div class="container">
+		<p>© 2025 Ferreri-Work · Todos los derechos resevados.</p>
+	</div>
+</footer>
+</body>
+</html>

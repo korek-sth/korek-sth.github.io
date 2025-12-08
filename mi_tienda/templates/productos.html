@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.productos-header {
+  background: linear-gradient(135deg, #ff8c42 0%, #ff9f5a 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.productos-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+}
+
+.productos-header p {
+  margin: 0;
+  opacity: 0.95;
+}
+
+.buscador-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+}
+
+.buscador-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.buscador-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.buscador-group label {
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.buscador-group input {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.buscador-group input:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+}
+
+.btn-buscar {
+  padding: 10px 20px;
+  background: #ff8c42;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-buscar:hover {
+  background: #ff7a1a;
+}
+
+.btn-limpiar {
+  padding: 10px 20px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-limpiar:hover {
+  background: #4b5563;
+}
+
+.productos-container { margin-top: 20px; }
+
+.resultados-info {
+  color: #6b7280;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.sin-productos {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .buscador-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .buscador-form {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="productos-header">
+  <h1>🛍️ Nuestros Productos</h1>
+  <p>Encuentra las herramientas que necesitas para tu trabajo</p>
+</div>
+
+<!-- Buscador -->
+<div class="buscador-container">
+  <form class="buscador-form" id="formulario-filtro">
+    <div class="buscador-group">
+      <label for="buscar-nombre">Nombre del Producto</label>
+      <input type="text" id="buscar-nombre" placeholder="ej: Llave, Martillo..." autocomplete="off">
+    </div>
+    <div class="buscador-group">
+      <label for="buscar-marca">Marca</label>
+      <input type="text" id="buscar-marca" placeholder="ej: Stanley, Bosch..." autocomplete="off">
+    </div>
+    <div class="buscador-group">
+      <label for="buscar-precio">Precio Máximo</label>
+      <input type="number" id="buscar-precio" placeholder="S/ 0.00" min="0" step="0.01">
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button type="button" class="btn-buscar" onclick="filtrarProductos()">🔍 Filtrar</button>
+      <button type="button" class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Resultados -->
+<div class="productos-container">
+  <div id="resultados-info" class="resultados-info"></div>
+
+  {% if productos %}
+  <div class="productos-grid" id="productos-grid">
+    {% for producto in productos %}
+    <div class="producto-card" data-nombre="{{ producto.nombre.lower() }}" data-marca="{{ producto.get('marca', '').lower() }}" data-precio="{{ producto.precio }}">
+      <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="producto-imagen">
+      <div class="producto-info">
+        <h3>{{ producto.nombre }}</h3>
+        {% if producto.get('marca') %}<p style="color: #6b7280; font-size: 12px;">{{ producto.marca }}</p>{% endif %}
+        <p class="descripcion">{{ producto.descripcion[:100] }}{% if producto.descripcion|length > 100 %}...{% endif %}</p>
+        <p class="precio">S/ {{ "%.2f"|format(producto.precio) }}</p>
+        <div class="producto-acciones">
+          <a href="{{ url_for('producto_detalle', id=producto.id) }}" class="btn-ver">Ver detalles</a>
+          <button type="button" onclick="agregarCarrito({{ producto.id }}, 1)" class="btn-carrito">Agregar</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="sin-productos">No hay productos disponibles</p>
+  {% endif %}
+</div>
+
+<script>
+function filtrarProductos() {
+  const nombre = document.getElementById('buscar-nombre').value.toLowerCase();
+  const marca = document.getElementById('buscar-marca').value.toLowerCase();
+  const precio = parseFloat(document.getElementById('buscar-precio').value) || Infinity;
+  
+  const productos = document.querySelectorAll('#productos-grid .producto-card');
+  let conteo = 0;
+  
+  productos.forEach(producto => {
+    const nombreProducto = producto.dataset.nombre;
+    const marcaProducto = producto.dataset.marca;
+    const precioProducto = parseFloat(producto.dataset.precio);
+    
+    const coincideNombre = nombre === '' || nombreProducto.includes(nombre);
+    const coincideMarca = marca === '' || marcaProducto.includes(marca);
+    const coincidePrecio = precioProducto <= precio;
+    
+    if (coincideNombre && coincideMarca && coincidePrecio) {
+      producto.style.display = 'block';
+      conteo++;
+    } else {
+      producto.style.display = 'none';
+    }
+  });
+  
+  actualizarResultados(conteo, productos.length);
+}
+
+function limpiarFiltros() {
+  document.getElementById('buscar-nombre').value = '';
+  document.getElementById('buscar-marca').value = '';
+  document.getElementById('buscar-precio').value = '';
+  document.getElementById('resultados-info').textContent = '';
+  
+  const productos = document.querySelectorAll('#productos-grid .producto-card');
+  productos.forEach(producto => {
+    producto.style.display = 'block';
+  });
+}
+
+function actualizarResultados(visibles, total) {
+  const info = document.getElementById('resultados-info');
+  if (visibles === 0) {
+    info.innerHTML = '<span style="color: #ef4444;">❌ No se encontraron productos con los filtros aplicados</span>';
+  } else if (visibles < total) {
+    info.innerHTML = `<span style="color: #10b981;">✓ Mostrando ${visibles} de ${total} productos</span>`;
+  } else {
+    info.textContent = '';
+  }
+}
+
+// Filtrar al presionar Enter
+document.getElementById('buscar-nombre').addEventListener('keypress', e => e.key === 'Enter' && filtrarProductos());
+document.getElementById('buscar-marca').addEventListener('keypress', e => e.key === 'Enter' && filtrarProductos());
+document.getElementById('buscar-precio').addEventListener('keypress', e => e.key === 'Enter' && filtrarProductos());
+</script>
+{% endblock %}

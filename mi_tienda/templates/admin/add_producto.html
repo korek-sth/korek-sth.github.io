@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.form-header {
+  background: linear-gradient(135deg, #ff8c42 0%, #ff9f5a 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+}
+
+.form-header p {
+  margin: 0;
+  opacity: 0.95;
+}
+
+.form-container {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group .hint {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.error-message {
+  background: #fee;
+  color: #ef4444;
+  border-left: 4px solid #ef4444;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.btn-primary {
+  background: #ff8c42;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #ff7a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+}
+
+.breadcrumb a {
+  color: #ff8c42;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+  .form-container {
+    padding: 20px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+}
+</style>
+
+<div class="breadcrumb">
+  <a href="{{ url_for('admin_productos') }}">← Volver a productos</a>
+</div>
+
+<div class="form-header">
+  <h2>➕ Agregar Nuevo Producto</h2>
+  <p>Completa el formulario para agregar un nuevo producto al catálogo</p>
+</div>
+
+{% if error %}
+<div class="error-message">
+  <strong>Error:</strong> {{ error }}
+</div>
+{% endif %}
+
+<div class="form-container">
+  <form method="post" action="{{ url_for('add_producto') }}">
+    
+    <div class="form-group">
+      <label for="nombre">Nombre del Producto *</label>
+      <input type="text" id="nombre" name="nombre" required placeholder="ej: Llave Inglesa 10 pulgadas">
+      <div class="hint">Campo obligatorio</div>
+    </div>
+
+    <div class="form-group">
+      <label for="marca">Marca</label>
+      <input type="text" id="marca" name="marca" placeholder="ej: Stanley, Bosch, DeWalt">
+      <div class="hint">Marca del fabricante</div>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio (S/) *</label>
+      <input type="number" id="precio" name="precio" step="0.01" min="0" required placeholder="ej: 49.99">
+      <div class="hint">Precio en Soles, con decimales</div>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" name="descripcion" placeholder="Descripción detallada del producto..."></textarea>
+      <div class="hint">Información relevante sobre el producto</div>
+    </div>
+
+    <div class="form-group">
+      <label for="imagen">URL de la Imagen</label>
+      <input type="text" id="imagen" name="imagen" placeholder="https://ejemplo.com/imagen.jpg">
+      <div class="hint">Enlace completo a la imagen del producto</div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">✓ Guardar Producto</button>
+      <a href="{{ url_for('admin_productos') }}" class="btn btn-secondary">✕ Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
