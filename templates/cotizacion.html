@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.cotizacion-header {
+  background: linear-gradient(135deg, #ff8c42 0%, #ff9f5a 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.cotizacion-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+}
+
+.cotizacion-header p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.tabla-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.tabla-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-container thead {
+  background: #6b7280;
+  color: white;
+}
+
+.tabla-container th {
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.tabla-container td {
+  padding: 14px;
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.tabla-container tbody tr:hover {
+  background: #f9f5f0;
+}
+
+.tabla-container tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.precio {
+  color: #ff8c42;
+  font-weight: 600;
+}
+
+.cantidad-input {
+  width: 70px;
+  padding: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.btn-quitar {
+  padding: 6px 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.btn-quitar:hover {
+  background: #dc2626;
+}
+
+.resumen {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 400px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+
+.resumen-total {
+  font-size: 20px;
+  color: #ff8c42;
+  font-weight: 700;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid #ff8c42;
+}
+
+.botones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #ff8c42;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #ff7a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+.carrito-vacio {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.carrito-vacio p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+</style>
+
+<div class="cotizacion-header">
+  <h2>Cotización</h2>
+  <p>Revisa los productos, modifica cantidades y descarga tu cotización</p>
+</div>
+
+<div id="carrito-container" class="tabla-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Precio Unit.</th>
+        <th>Cantidad</th>
+        <th>Subtotal</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody id="carrito-body">
+      <tr><td colspan="5" style="text-align: center; padding: 30px;">Cargando carrito...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="resumen">
+  <div class="resumen-total">
+    Total: <span id="total">S/ 0.00</span>
+  </div>
+</div>
+
+<div class="botones">
+  <button onclick="descargarCotizacion()" class="btn btn-primary">📥 Descargar Cotización (PDF)</button>
+  <a href="/productos" class="btn btn-secondary">🛍️ Seguir comprando</a>
+</div>
+
+<script>
+// Productos desde Jinja (pasados por la ruta)
+const productosData = {{ productos | tojson }};
+
+function renderCarrito() {
+    try {
+    const raw = localStorage.getItem('mi_tienda_cart') || '[]';
+    const cart = JSON.parse(raw);
+    const tbody = document.getElementById('carrito-body');
+    
+    if (!Array.isArray(cart) || cart.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5"><div class="carrito-vacio"><p>🛒 Tu carrito está vacío</p><a href="/productos" class="btn btn-secondary">Ir a Productos</a></div></td></tr>';
+        document.getElementById('total').textContent = 'S/ 0.00';
+        return;
+    }
+
+    let html = '';
+    let totalGral = 0;
+
+    cart.forEach(item => {
+        const prod = productosData.find(p => p.id === item.id);
+        if (!prod) return;
+
+        const qty = Number(item.qty) || 1;
+        const subtotal = prod.precio * qty;
+        totalGral += subtotal;
+
+        html += `
+        <tr>
+            <td><strong>${prod.nombre}</strong></td>
+            <td><span class="precio">S/ ${prod.precio.toFixed(2)}</span></td>
+            <td><input type="number" min="1" value="${qty}" onchange="actualizarCantidad(${item.id}, this.value)" class="cantidad-input"></td>
+            <td><strong class="precio">S/ ${subtotal.toFixed(2)}</strong></td>
+            <td><button onclick="quitarDelCarrito(${item.id})" class="btn-quitar">✕ Quitar</button></td>
+        </tr>
+        `;
+    });
+
+    tbody.innerHTML = html;
+    document.getElementById('total').textContent = `S/ ${totalGral.toFixed(2)}`;
+} catch (e) {
+    console.error('Error renderizando carrito:', e);
+}
+}
+
+function actualizarCantidad(productId, newQty) {
+    try {
+        newQty = parseInt(newQty) || 1;
+        if (newQty < 1) newQty = 1;
+
+        const raw = localStorage.getItem('mi_tienda_cart') || '[]';
+        let cart = JSON.parse(raw);
+        const item = cart.find(i => i.id === productId);
+        if (item) {
+            item.qty = newQty;
+            localStorage.setItem('mi_tienda_cart', JSON.stringify(cart));
+            renderCarrito();
+        }
+    } catch (e) {
+        console.error('Error actualizando cantidad:', e);
+    }
+}
+
+function quitarDelCarrito(productId) {
+try {
+    const raw = localStorage.getItem('mi_tienda_cart') || '[]';
+    let cart = JSON.parse(raw);
+    cart = cart.filter(i => i.id !== productId);
+    localStorage.setItem('mi_tienda_cart', JSON.stringify(cart));
+    renderCarrito();
+} catch (e) {
+    console.error('Error quitando del carrito:', e);
+}
+}
+
+function descargarCotizacion() {
+    try {
+        const raw = localStorage.getItem('mi_tienda_cart') || '[]';
+        const cart = JSON.parse(raw);
+        
+        if (!Array.isArray(cart) || cart.length === 0) {
+            alert('Carrito vacío');
+            return;
+        }
+
+        // Enviar carrito al servidor para generar PDF
+        fetch('/descargar-cotizacion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ carrito: cart, productos: productosData })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Error al descargar');
+            return res.blob();
+        })
+        .then(blob => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'cotizacion_' + new Date().toISOString().split('T')[0] + '.pdf';
+            link.click();
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            alert('No se pudo descargar la cotización.');
+        });
+    } catch (e) {
+        console.error('Error descargando:', e);
+        alert('No se pudo descargar la cotización.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', renderCarrito);
+</script>
+{% endblock %}

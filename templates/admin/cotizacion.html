@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Ventas</h2>
+<p><a href="{{ url_for('admin_index') }}">← Volver al dashboard</a></p>
+
+{% if ventas %}
+    <ul>
+    {% for v in ventas %}
+        <li>
+        Venta {{ loop.index }} —
+        {% if v.get('items') %}
+            {{ v.items|length }} items,
+        {% endif %}
+        datos: {{ v }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay ventas registradas.</p>
+{% endif %}
+{% endblock %}

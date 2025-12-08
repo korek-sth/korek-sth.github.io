@@ -1,0 +1,49 @@
+/* Reset básico */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;line-height:1.5;color:#222;background:#f9f5f0}
+
+/* Contenedor */
+.container{max-width:1100px;margin:0 auto;padding:20px}
+
+/* Header */
+.site-header{background:#fff;border-bottom:2px solid #ff8c42;position:sticky;top:0;z-index:50}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#111}
+.logo{width:40px;height:40px;object-fit:contain;border-radius:6px}
+.brand span{font-weight:700;letter-spacing:0.6px;color:#ff8c42}
+
+/* Nav */
+.main-nav a{margin-left:14px;color:#6b7280;text-decoration:none;padding:8px 10px;border-radius:6px;transition:background .18s, color .18s}
+.main-nav a:hover{background:#fff3e0;color:#ff8c42}
+.cart-link{position:relative;display:inline-flex;align-items:center}
+.cart-count{background:#ff8c42;color:#fff;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:8px;font-size:.9rem}
+
+/* Main content tweaks */
+.main-content{padding:28px 0}
+
+/* Productos grid (mejor visible) */
+.productos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.producto-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px rgba(255,140,66,0.06);transition:transform .22s,box-shadow .22s}
+.producto-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(255,140,66,0.12)}
+.producto-imagen{width:100%;height:180px;object-fit:cover}
+.producto-info{padding:14px}
+.precio{font-size:1.15rem;color:#ff8c42;font-weight:700;margin-top:8px}
+.producto-acciones{display:flex;gap:8px;margin-top:12px}
+.btn-ver,.btn-carrito{flex:1;padding:9px;border-radius:8px;text-align:center;border:none;cursor:pointer}
+.btn-ver{background:#ff8c42;color:#fff;text-decoration:none}
+.btn-carrito{background:#6b7280;color:#fff}
+.btn-ver:hover{background:#ff7a1a}
+.btn-carrito:hover{background:#4b5563}
+
+/* Botones y formularios */
+button[type="submit"], button{cursor:pointer}
+
+/* Footer */
+.site-footer{margin-top:36px;padding:18px 0;background:transparent;border-top:2px solid #ff8c42;text-align:center;color:#6b7280}
+
+/* Responsive */
+@media (max-width:700px){
+	.header-inner{flex-direction:column;align-items:flex-start}
+	.main-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+	.producto-imagen{height:160px}
+}
